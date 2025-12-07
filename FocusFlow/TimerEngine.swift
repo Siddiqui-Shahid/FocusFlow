@@ -1,0 +1,118 @@
+import Foundation
+
+/// Simple timer state representation
+public enum TimerState: Equatable {
+    case idle
+    case running(startTime: Date, plannedDuration: TimeInterval, elapsed: TimeInterval)
+    case paused(elapsed: TimeInterval, plannedDuration: TimeInterval)
+    case finished
+}
+
+/// TimerEngine - actor to manage a single timer safely across threads.
+/// Publishes updates via AsyncStream<TimerState> which the UI can subscribe to.
+public actor TimerEngine {
+    public private(set) var state: TimerState = .idle
+
+    // AsyncStream / Continuation for UI updates
+    private var continuation: AsyncStream<TimerState>.Continuation?
+    public var stream: AsyncStream<TimerState> {
+        AsyncStream { cont in
+            self.continuation = cont
+            cont.yield(self.state)
+        }
+    }
+
+    private var tickTask: Task<Void, Never>?
+
+    public init() {}
+
+    public func start(plannedDuration: TimeInterval) async {
+        let now = Date()
+        state = .running(startTime: now, plannedDuration: plannedDuration, elapsed: 0)
+        scheduleTicks()
+        publishState()
+        // Persist session via SessionManager (call out to persistence in ViewModel)
+    }
+
+    public func pause() async {
+        switch state {
+        case .running(let start, let planned, _):
+            let elapsed = Date().timeIntervalSince(start)
+            state = .paused(elapsed: elapsed, plannedDuration: planned)
+            cancelTicks()
+            publishState()
+        default:
+            return
+        }
+    }
+
+    public func resume() async {
+        switch state {
+        case .paused(let elapsed, let planned):
+            let remaining = max(0, planned - elapsed)
+            state = .running(startTime: Date(), plannedDuration: remaining, elapsed: elapsed)
+            scheduleTicks()
+            publishState()
+        default:
+            return
+        }
+    }
+
+    public func stop() async {
+        cancelTicks()
+        state = .idle
+        publishState()
+    }
+
+    // compute current remaining (safe)
+    public func remaining() -> TimeInterval {
+        switch state {
+        case .idle:
+            return 0
+        case .finished:
+            return 0
+        case .paused(let elapsed, let planned):
+            return max(0, planned - elapsed)
+        case .running(let start, let planned, let _):
+            let elapsed = Date().timeIntervalSince(start)
+            return max(0, planned - elapsed)
+        }
+    }
+
+    private func scheduleTicks() {
+        cancelTicks()
+        tickTask = Task { [weak self] in
+            while !Task.isCancelled {
+                await self?.tick()
+                try? await Task.sleep(nanoseconds: 200_000_000) // 200ms for smooth UI
+            }
+        }
+    }
+
+    private func cancelTicks() {
+        tickTask?.cancel()
+        tickTask = nil
+    }
+
+    private func tick() async {
+        // If running and finished, move to finished state
+        switch state {
+        case .running(let start, let planned, _):
+            let elapsed = Date().timeIntervalSince(start)
+            if elapsed >= planned {
+                state = .finished
+                cancelTicks()
+            } else {
+                // keep as running but update elapsed for UI
+                state = .running(startTime: start, plannedDuration: planned, elapsed: elapsed)
+            }
+            publishState()
+        default:
+            break
+        }
+    }
+
+    private func publishState() {
+        continuation?.yield(state)
+    }
+}
