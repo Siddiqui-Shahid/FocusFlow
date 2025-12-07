@@ -73,7 +73,7 @@ public actor TimerEngine {
             return 0
         case .paused(let elapsed, let planned):
             return max(0, planned - elapsed)
-        case .running(let start, let planned, let _):
+        case .running(let start, let planned, _):
             let elapsed = Date().timeIntervalSince(start)
             return max(0, planned - elapsed)
         }
