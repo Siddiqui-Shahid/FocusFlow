@@ -10,39 +10,43 @@ struct HomeView: View {
                 Color(UIColor.systemGray6).ignoresSafeArea()
 
                 VStack {
-                    // Top bar
                     HStack {
-                        Text("FocusFlow")
-                            .font(.largeTitle.weight(.bold))
-
-                        Spacer()
-
-                        Button(action: { /* open settings */ }) {
-                            Image(systemName: "gearshape.fill")
-                                .font(.title2)
-                                .foregroundColor(Color(UIColor.darkGray))
+                        // Optional title when running
+                        if timerVM.isRunning {
+                          
+                                VStack(spacing: 6) {
+                                    Text("Deep Work")
+                                        .font(.system(size: 40, weight: .heavy))
+                                        .foregroundColor(Color(UIColor.label))
+                                    
+                                    Text("POMODORO STRATEGY")
+                                        .font(.caption2.weight(.semibold))
+                                        .foregroundColor(Color(UIColor.systemGray3))
+                                        .tracking(2)
+                                }
+                            
+                            .padding([.top, .horizontal])
+                            .transition(.opacity)
+                        } else {
+                            // Top bar
+                            
+                            Text("FocusFlow")
+                                .font(.largeTitle.weight(.bold))
+                            
+                            Spacer()
+                            
+                            Button(action: { /* open settings */ }) {
+                                Image(systemName: "gearshape.fill")
+                                    .font(.title2)
+                                    .foregroundColor(Color(UIColor.darkGray))
+                            }
+                            
                         }
                     }
                     .padding([.top, .horizontal])
-
+                    .offset(y: timerVM.isRunning ? -36 : 0)
+                    .animation(.easeInOut(duration: 0.4), value: timerVM.isRunning)
                     Spacer()
-
-                    // Optional title when running
-                    if timerVM.isRunning {
-                        VStack(spacing: 6) {
-                            Text("Deep Work")
-                                .font(.system(size: 40, weight: .heavy))
-                                .foregroundColor(Color(UIColor.label))
-
-                            Text("POMODORO STRATEGY")
-                                .font(.caption2.weight(.semibold))
-                                .foregroundColor(Color(UIColor.systemGray3))
-                                .tracking(2)
-                        }
-                        .transition(.opacity)
-                        .padding(.bottom, 8)
-                    }
-
                     // Timer circle
                     ZStack {
                         Circle()
@@ -144,7 +148,8 @@ struct HomeView: View {
                         .padding(.top, 4)
                     }
                     .padding(.top, 32)
-                    .animation(.easeInOut(duration: 0.35), value: timerVM.isRunning)
+                    .offset(y: timerVM.isRunning ? -8 : 0)
+                    .animation(.easeInOut(duration: 0.28), value: timerVM.isRunning)
 
                     Spacer()
 
@@ -155,9 +160,7 @@ struct HomeView: View {
                         .offset(y: timerVM.isRunning ? 500 : 0)
                         .animation(.easeInOut(duration: 0.45), value: timerVM.isRunning)
                 }
-                // move the whole content stack slightly when session starts so children move with parent
-                .offset(y: timerVM.isRunning ? -60 : 0)
-                .animation(.easeInOut(duration: 0.45), value: timerVM.isRunning)
+                // previously we animated the whole stack; removed so the timer circle stays fixed
             }
             .navigationBarHidden(true)
         }
