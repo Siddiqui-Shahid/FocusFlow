@@ -11,7 +11,7 @@ FocusFlow is a Smart Pomodoro & Focus Coach built with SwiftUI. It helps users s
 | MVP | Core timer engine with start, pause, resume, stop | Done | Implemented via `TimerEngine` actor and wired to `TimerViewModel`. |
 | MVP | Circular timer UI and primary controls | Done | Main screen layout and animations are in place. |
 | MVP | Core Data persistence for focus sessions | Done | `PersistenceController` and `FocusSession` model scaffolded. |
-| MVP | Custom presets with configurable work/break durations | Pending | Preset management UI and persistence still need to land. |
+| MVP | Custom presets with configurable work/break durations | Done | Preset management UI, persistence, and tests implemented. |
 | MVP | Persistent session history with daily/weekly totals + streaks | Pending | Requires history views, aggregation helpers, and streak logic. |
 | MVP | Local notifications when sessions or breaks finish | Pending | `NotificationService` wiring and permission flows not implemented. |
 | MVP | Breathing micro-routine during breaks | Pending | Needs animated view, timing, and audio assets. |

@@ -4,12 +4,18 @@ struct TimerControlsView: View {
     @EnvironmentObject var timerVM: TimerViewModel
     @Binding var noteText: String
 
-    var start25: () -> Void
-    var startShortBreak: () -> Void
-    var startLongBreak: () -> Void
+    var selectedPreset: PresetViewData?
+    var startFocusAction: () -> Void
+    var startBreakAction: () -> Void
 
     var body: some View {
         VStack(spacing: 12) {
+            if let preset = selectedPreset {
+                Text(preset.name.uppercased())
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+            }
+
             if timerVM.isRunning {
                 TextField("Jot down a distraction...", text: $noteText)
                     .padding()
@@ -71,7 +77,12 @@ struct TimerControlsView: View {
                     }
                     .transition(.scale.combined(with: .opacity))
                 } else {
-                    Color.clear.frame(width: 64, height: 64)
+                    Button(action: startBreakAction) {
+                        Circle()
+                            .fill(Color(UIColor.systemGray5))
+                            .frame(width: 64, height: 64)
+                            .overlay(Image(systemName: "moon.zzz.fill").foregroundColor(.primary))
+                    }
                 }
             }
             .padding(.top, 4)
@@ -85,7 +96,7 @@ struct TimerControlsView: View {
         withAnimation(.easeInOut(duration: 0.3)) {
             switch timerVM.displayedState {
             case .idle, .finished:
-                start25()
+                startFocusAction()
             case .running:
                 timerVM.pause()
             case .paused:
@@ -100,7 +111,11 @@ struct TimerControlsView_Previews: PreviewProvider {
     static var previews: some View {
         let p = PersistenceController.shared
         let vm = TimerViewModel(timerEngine: TimerEngine(), persistence: p)
-        TimerControlsView(noteText: .constant(""), start25: {}, startShortBreak: {}, startLongBreak: {})
+        let presetStore = PresetStore(persistence: p)
+        TimerControlsView(noteText: .constant(""),
+                          selectedPreset: presetStore.presets.first,
+                          startFocusAction: {},
+                          startBreakAction: {})
             .environmentObject(vm)
             .previewLayout(.sizeThatFits)
             .padding()

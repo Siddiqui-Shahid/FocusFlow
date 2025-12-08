@@ -55,10 +55,26 @@ struct PersistenceController {
             attr("elapsedSeconds", .integer64AttributeType, isOptional: false),
             attr("completed", .booleanAttributeType),
             attr("type", .stringAttributeType, isOptional: true),
+            attr("createdAt", .dateAttributeType, isOptional: false),
+            attr("presetId", .UUIDAttributeType, isOptional: true)
+        ]
+
+        let preset = NSEntityDescription()
+        preset.name = "Preset"
+        preset.managedObjectClassName = "Preset"
+        preset.properties = [
+            attr("id", .UUIDAttributeType),
+            attr("name", .stringAttributeType),
+            attr("workDuration", .integer64AttributeType),
+            attr("breakDuration", .integer64AttributeType),
+            attr("cycles", .integer16AttributeType, isOptional: false),
+            attr("accentColorHex", .stringAttributeType, isOptional: true),
+            attr("isDefault", .booleanAttributeType),
+            attr("sortOrder", .integer16AttributeType, isOptional: false),
             attr("createdAt", .dateAttributeType, isOptional: false)
         ]
 
-        model.entities = [session]
+        model.entities = [session, preset]
         return model
     }
 }

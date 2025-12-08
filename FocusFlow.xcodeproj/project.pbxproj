@@ -21,7 +21,22 @@
 		7A25E7042EE6CFFB009C91FF /* StatCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25E6EF2EE6CFFB009C91FF /* StatCardView.swift */; };
 		7A25E7052EE6CFFB009C91FF /* TimerControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25E6F12EE6CFFB009C91FF /* TimerControlsView.swift */; };
 		7A25E7062EE6CFFB009C91FF /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25E6EB2EE6CFFB009C91FF /* TimerViewModel.swift */; };
+		7AD5A1012F1AA00100A1A1A1 /* Preset+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5A1002F1AA00100A1A1A1 /* Preset+CoreData.swift */; };
+		7AD5A1032F1AA00100A1A1A1 /* PresetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5A1022F1AA00100A1A1A1 /* PresetStore.swift */; };
+		7AD5A1052F1AA00100A1A1A1 /* PresetManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5A1042F1AA00100A1A1A1 /* PresetManagementView.swift */; };
+		7AE0B10C2F1AA3A2001B37D5 /* PresetStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0B10A2F1AA3A2001B37D5 /* PresetStoreTests.swift */; };
+		7AE0B10D2F1AA3A2001B37D5 /* TimerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0B10B2F1AA3A2001B37D5 /* TimerViewModelTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7AE0B1112F1AA3A2001B37D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7A6EECBC2EE5AFAC00A8F0C9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7A6EECC32EE5AFAC00A8F0C9 /* FocusFlow */;
+			remoteInfo = FocusFlow;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		7A25E6E42EE6CFFB009C91FF /* TimerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerEngine.swift; sourceTree = "<group>"; };
@@ -39,10 +54,23 @@
 		7A25E6F62EE6CFFB009C91FF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7A25E6F72EE6CFFB009C91FF /* FocusFlowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusFlowApp.swift; sourceTree = "<group>"; };
 		7A6EECC42EE5AFAC00A8F0C9 /* FocusFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7AD5A1002F1AA00100A1A1A1 /* Preset+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Preset+CoreData.swift"; sourceTree = "<group>"; };
+		7AD5A1022F1AA00100A1A1A1 /* PresetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetStore.swift; sourceTree = "<group>"; };
+		7AD5A1042F1AA00100A1A1A1 /* PresetManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetManagementView.swift; sourceTree = "<group>"; };
+		7AE0B10A2F1AA3A2001B37D5 /* PresetStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetStoreTests.swift; sourceTree = "<group>"; };
+		7AE0B10B2F1AA3A2001B37D5 /* TimerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModelTests.swift; sourceTree = "<group>"; };
+		7AE0B10E2F1AA3A2001B37D5 /* FocusFlowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocusFlowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		7A6EECC12EE5AFAC00A8F0C9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7AE0B1052F1AA3A2001B37D5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -65,6 +93,7 @@
 			children = (
 				7A25E6E62EE6CFFB009C91FF /* FocusSession+CoreData.swift */,
 				7A25E6E72EE6CFFB009C91FF /* PersistenceController.swift */,
+				7AD5A1002F1AA00100A1A1A1 /* Preset+CoreData.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -81,6 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				7A25E6EB2EE6CFFB009C91FF /* TimerViewModel.swift */,
+				7AD5A1022F1AA00100A1A1A1 /* PresetStore.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -103,6 +133,7 @@
 				7A25E6F22EE6CFFB009C91FF /* Components */,
 				7A25E6F32EE6CFFB009C91FF /* ContentView.swift */,
 				7A25E6F42EE6CFFB009C91FF /* HomeView.swift */,
+				7AD5A1042F1AA00100A1A1A1 /* PresetManagementView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -125,14 +156,25 @@
 			isa = PBXGroup;
 			children = (
 				7A25E6F82EE6CFFB009C91FF /* FocusFlow */,
+				7AE0B1092F1AA3A2001B37D5 /* FocusFlowTests */,
 				7A6EECC52EE5AFAC00A8F0C9 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		7AE0B1092F1AA3A2001B37D5 /* FocusFlowTests */ = {
+			isa = PBXGroup;
+			children = (
+				7AE0B10A2F1AA3A2001B37D5 /* PresetStoreTests.swift */,
+				7AE0B10B2F1AA3A2001B37D5 /* TimerViewModelTests.swift */,
+			);
+			path = FocusFlowTests;
 			sourceTree = "<group>";
 		};
 		7A6EECC52EE5AFAC00A8F0C9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				7A6EECC42EE5AFAC00A8F0C9 /* FocusFlow.app */,
+				7AE0B10E2F1AA3A2001B37D5 /* FocusFlowTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -159,6 +201,26 @@
 			productReference = 7A6EECC42EE5AFAC00A8F0C9 /* FocusFlow.app */;
 			productType = "com.apple.product-type.application";
 		};
+		7AE0B1072F1AA3A2001B37D5 /* FocusFlowTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7AE0B10F2F1AA3A2001B37D5 /* Build configuration list for PBXNativeTarget "FocusFlowTests" */;
+			buildPhases = (
+				7AE0B1042F1AA3A2001B37D5 /* Sources */,
+				7AE0B1052F1AA3A2001B37D5 /* Frameworks */,
+				7AE0B1062F1AA3A2001B37D5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7AE0B1122F1AA3A2001B37D5 /* PBXTargetDependency */,
+			);
+			name = FocusFlowTests;
+			packageProductDependencies = (
+			);
+			productName = FocusFlowTests;
+			productReference = 7AE0B10E2F1AA3A2001B37D5 /* FocusFlowTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -171,6 +233,10 @@
 				TargetAttributes = {
 					7A6EECC32EE5AFAC00A8F0C9 = {
 						CreatedOnToolsVersion = 16.0;
+					};
+					7AE0B1072F1AA3A2001B37D5 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 7A6EECC32EE5AFAC00A8F0C9;
 					};
 				};
 			};
@@ -189,6 +255,7 @@
 			projectRoot = "";
 			targets = (
 				7A6EECC32EE5AFAC00A8F0C9 /* FocusFlow */,
+				7AE0B1072F1AA3A2001B37D5 /* FocusFlowTests */,
 			);
 		};
 /* End PBXProject section */
@@ -203,7 +270,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7AE0B1062F1AA3A2001B37D5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7AE0B1122F1AA3A2001B37D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7A6EECC32EE5AFAC00A8F0C9 /* FocusFlow */;
+			targetProxy = 7AE0B1112F1AA3A2001B37D5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXSourcesBuildPhase section */
 		7A6EECC02EE5AFAC00A8F0C9 /* Sources */ = {
@@ -222,6 +304,18 @@
 				7A25E7042EE6CFFB009C91FF /* StatCardView.swift in Sources */,
 				7A25E7052EE6CFFB009C91FF /* TimerControlsView.swift in Sources */,
 				7A25E7062EE6CFFB009C91FF /* TimerViewModel.swift in Sources */,
+				7AD5A1012F1AA00100A1A1A1 /* Preset+CoreData.swift in Sources */,
+				7AD5A1032F1AA00100A1A1A1 /* PresetStore.swift in Sources */,
+				7AD5A1052F1AA00100A1A1A1 /* PresetManagementView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7AE0B1042F1AA3A2001B37D5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7AE0B10C2F1AA3A2001B37D5 /* PresetStoreTests.swift in Sources */,
+				7AE0B10D2F1AA3A2001B37D5 /* TimerViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,6 +497,38 @@
 			};
 			name = Release;
 		};
+		7AE0B1102F1AA3A2001B37D5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.siddiqui.FocusFlowTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FocusFlow.app/FocusFlow";
+			};
+			name = Debug;
+		};
+		7AE0B1152F1AA3A2001B37D5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.siddiqui.FocusFlowTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FocusFlow.app/FocusFlow";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -420,6 +546,15 @@
 			buildConfigurations = (
 				7A6EECD32EE5AFAD00A8F0C9 /* Debug */,
 				7A6EECD42EE5AFAD00A8F0C9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7AE0B10F2F1AA3A2001B37D5 /* Build configuration list for PBXNativeTarget "FocusFlowTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7AE0B1102F1AA3A2001B37D5 /* Debug */,
+				7AE0B1152F1AA3A2001B37D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

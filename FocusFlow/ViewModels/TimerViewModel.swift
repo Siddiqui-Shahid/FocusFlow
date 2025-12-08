@@ -9,6 +9,11 @@ final class TimerViewModel: ObservableObject {
     private var streamTask: Task<Void, Never>?
     let persistence: PersistenceController
 
+    enum SessionMode: String {
+        case work
+        case breakTime = "break"
+    }
+
     init(timerEngine: TimerEngine, persistence: PersistenceController) {
         self.timerEngine = timerEngine
         self.persistence = persistence
@@ -29,15 +34,21 @@ final class TimerViewModel: ObservableObject {
     }
 
     // UI actions
-    func startPreset(seconds: TimeInterval) {
+    func start(preset: PresetViewData, mode: SessionMode) {
         Task {
-            // capture engine to avoid implicit `self` capture in Swift 6
+            let duration = mode == .work ? preset.workDuration : preset.breakDuration
+            guard duration > 0 else { return }
+
             let engine = timerEngine
-            await engine.start(plannedDuration: seconds)
-            // persist session start
+            await engine.start(plannedDuration: duration)
+
             let ctx = persistence.newBackgroundContext()
             await ctx.perform {
-                let _ = FocusSession.create(in: ctx, startTime: Date(), plannedDuration: seconds)
+                let _ = FocusSession.create(in: ctx,
+                                            startTime: Date(),
+                                            plannedDuration: duration,
+                                            type: mode.rawValue,
+                                            presetId: preset.id)
                 try? ctx.save()
             }
         }

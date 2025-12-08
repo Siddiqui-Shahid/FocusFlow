@@ -14,13 +14,15 @@ public class FocusSession: NSManagedObject {
     @NSManaged public var completed: Bool
     @NSManaged public var type: String?
     @NSManaged public var createdAt: Date?
+    @NSManaged public var presetId: UUID?
 }
 
 extension FocusSession {
     static func create(in context: NSManagedObjectContext,
                        startTime: Date,
                        plannedDuration: TimeInterval,
-                       type: String = "work") -> FocusSession {
+                       type: String = "work",
+                       presetId: UUID? = nil) -> FocusSession {
         let session = FocusSession(context: context)
         session.id = UUID()
         session.startTime = startTime
@@ -29,6 +31,7 @@ extension FocusSession {
         session.completed = false
         session.type = type
         session.createdAt = Date()
+        session.presetId = presetId
         return session
     }
 }
