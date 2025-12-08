@@ -6,27 +6,45 @@ FocusFlow is a Smart Pomodoro & Focus Coach built with SwiftUI. It helps users s
 - **Key files:** `TimerEngine.swift`, `TimerViewModel.swift`, `HomeView.swift`, `PersistenceController.swift`
 
 ## Feature Status
-| Feature | Status | Notes |
-| --- | --- | --- |
-| Core timer engine with start, pause, resume, stop | Done | Implemented via `TimerEngine` actor and wired to `TimerViewModel`. |
-| Circular timer UI and primary controls | Done | Main screen layout and animations are in place. |
-| Core Data persistence for focus sessions | Done | `PersistenceController` and `FocusSession` model scaffolded. |
-| Bottom card behavior and animations | In Progress | Needs tuning for hide/slide behavior while the timer runs. |
-| Distraction note capture on session stop | In Progress | Data pipeline exists; persistence wiring still pending. |
-| Forward/skip control for next session | Pending | Control logic and UI need to be added. |
-| Automated tests for timer flows | Pending | Unit coverage required for `TimerEngine` and `TimerViewModel`. |
-| Session history and analytics screens | Pending | Requires views, navigation, and aggregation logic. |
-| Local notifications for session breaks | Pending | Notification scheduling and cancellation are outstanding. |
+| Phase | Feature | Status | Notes |
+| --- | --- | --- | --- |
+| MVP | Core timer engine with start, pause, resume, stop | Done | Implemented via `TimerEngine` actor and wired to `TimerViewModel`. |
+| MVP | Circular timer UI and primary controls | Done | Main screen layout and animations are in place. |
+| MVP | Core Data persistence for focus sessions | Done | `PersistenceController` and `FocusSession` model scaffolded. |
+| MVP | Custom presets with configurable work/break durations | Pending | Preset management UI and persistence still need to land. |
+| MVP | Persistent session history with daily/weekly totals + streaks | Pending | Requires history views, aggregation helpers, and streak logic. |
+| MVP | Local notifications when sessions or breaks finish | Pending | `NotificationService` wiring and permission flows not implemented. |
+| MVP | Breathing micro-routine during breaks | Pending | Needs animated view, timing, and audio assets. |
+| MVP | Theme support (light/dark + accent color) | Pending | Style system and per-user settings not in place. |
+| MVP | Onboarding with daily goal setup | Pending | No onboarding experience or goal tracking yet. |
+| MVP | Basic analytics (total focus minutes, streak) | Pending | Depends on session aggregation and UI presentation. |
+| MVP | Bottom card behavior and animations | In Progress | Needs tuning for hide/slide behavior while the timer runs. |
+| MVP | Distraction note capture on session stop | In Progress | Data pipeline exists; persistence wiring still pending. |
+| MVP | Automated tests for timer flows | Pending | Unit coverage required for `TimerEngine` and `TimerViewModel`. |
+| Platform | Forward/skip control for next session | Pending | Control logic and UI need to be added. |
+| Platform | Widget (WidgetKit) quick actions | Pending | Requires Widget extension, timeline provider, and intents. |
+| Platform | Siri / App Intents for starting presets | Pending | AppIntent definitions and integration still outstanding. |
+| Platform | Watch companion for remote controls | Pending | Watch target and connectivity layer not started. |
+| Platform | Cloud sync via CloudKit (premium) | Pending | Switch Core Data container to NSPersistentCloudKitContainer and handle conflicts. |
+| Platform | HealthKit mindful minutes export | Pending | HealthKit permissions, write calls, and privacy copy required. |
+| Polish | CI pipeline (lint + unit/UI tests) | Pending | GitHub Actions workflow and test coverage not yet added. |
+| Polish | In-app purchases for premium tiers | Pending | StoreKit 2 integration and paywall UX required. |
+| Polish | App Shortcuts, haptics, and accessibility polish | Pending | Accessibility audit and haptic feedback not implemented. |
+| Polish | App Store assets, preview video, TestFlight release | Pending | Marketing assets, TestFlight configuration, and release process todo. |
 
 ## In-Progress Focus
 - Bottom card animation polish so the presets and stats tray slides out of view during active sessions and returns on stop.
 - Persisting the distraction note field when a session ends so notes appear in stored session records.
+- Explore preset management UX to unlock configurable work/break durations and prepare for onboarding goals.
 
 ## What's Pending
 - Implement forward/skip control logic plus UI affordances in `HomeView` and supporting view model methods.
 - Add unit tests covering timer lifecycle events, persistence interactions, and regression coverage for concurrency edge cases.
-- Build session history and analytics, including Core Data fetch requests, aggregation helpers, and SwiftUI screens.
-- Introduce local notification scheduling and cancellation hooks tied to session start/stop events.
+- Build session history, analytics dashboards, and streak logic including supporting fetch requests and aggregation helpers.
+- Introduce local notification scheduling and cancellation hooks tied to session start/stop events and breathing routines.
+- Deliver preset management, onboarding flows, and theme configuration screens tied to `UserSettings` persistence.
+- Stand up platform integrations (WidgetKit, App Intents, Watch companion, CloudKit sync, HealthKit export).
+- Prepare polish deliverables: CI pipeline, StoreKit paywall, enhanced accessibility/haptic feedback, and launch assets/TestFlight setup.
 
 **Architecture (concise)**
 - UI: SwiftUI Views (`HomeView`, `HistoryView`, `SettingsView`)
