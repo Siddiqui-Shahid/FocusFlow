@@ -46,6 +46,9 @@ FocusFlow turns short, focused work sessions into consistent habits. Start a wor
 2. Select the `FocusFlow` target and run on the simulator or a device.
 3. The starter code includes `TimerEngine.swift` and `PersistenceController.swift` to get going.
 
+**Agent Guidelines**
+- A local copy of recommended agent/developer guidelines is available in `AgentGuidelines.md`. It contains Swift/SwiftUI/SwiftData style and project rules adapted from the SwiftAgents project to help maintain consistency.
+
 **Testing**
 - Focus on unit tests for `TimerEngine` and `SessionManager` (start/pause/resume/stop flows).
 - Add UI tests for the main timer flow (start → finish → history entry).
