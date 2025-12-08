@@ -1,42 +1,32 @@
 # FocusFlow
-FocusFlow is a Smart Pomodoro & Focus Coach built with SwiftUI. It helps users start, track, and analyze focused work sessions using Pomodoro-style timers, session history, light coaching (breathing micro‑routines), and simple analytics. This repository contains a starter implementation and design notes to build on.
-
-**Quick Links**
-# FocusFlow
-
-> Development status: WIP — active development in progress (UI + timer engine)
-
-FocusFlow is a Pomodoro-inspired focus coach built with SwiftUI. This repository contains a working prototype and active work to match a new design (large circular timer, animated controls, and an improved session flow). The app is under active development — the core timer engine and basic UI are present, and a number of features remain to be implemented and polished.
+FocusFlow is a Smart Pomodoro & Focus Coach built with SwiftUI. It helps users start, track, and analyze focused work sessions using Pomodoro-style timers, session history, light coaching (breathing micro-routines), and simple analytics. This repository contains a working prototype and design notes to build on.
 
 **Quick Links**
 - **App:** `FocusFlow` (SwiftUI)
 - **Key files:** `TimerEngine.swift`, `TimerViewModel.swift`, `HomeView.swift`, `PersistenceController.swift`
 
-**Current Status (high level)**
-- Prototype UI implemented: circular progress ring, large time display, central play/pause control, and a bottom card for presets and stats.
-- `TimerEngine` actor implemented and wired to `TimerViewModel` (start/pause/resume/stop flows exist; resume logic improved).
-- Core Data stack present via `PersistenceController` with a `FocusSession` model (basic persistence working).
-- In-progress polish: animations, UI layout tweaks, and migration to Swift 6 friendly concurrency patterns.
+## Feature Status
+| Feature | Status | Notes |
+| --- | --- | --- |
+| Core timer engine with start, pause, resume, stop | Done | Implemented via `TimerEngine` actor and wired to `TimerViewModel`. |
+| Circular timer UI and primary controls | Done | Main screen layout and animations are in place. |
+| Core Data persistence for focus sessions | Done | `PersistenceController` and `FocusSession` model scaffolded. |
+| Bottom card behavior and animations | In Progress | Needs tuning for hide/slide behavior while the timer runs. |
+| Distraction note capture on session stop | In Progress | Data pipeline exists; persistence wiring still pending. |
+| Forward/skip control for next session | Pending | Control logic and UI need to be added. |
+| Automated tests for timer flows | Pending | Unit coverage required for `TimerEngine` and `TimerViewModel`. |
+| Session history and analytics screens | Pending | Requires views, navigation, and aggregation logic. |
+| Local notifications for session breaks | Pending | Notification scheduling and cancellation are outstanding. |
 
-**What's Done (selected)**
-- Central circular timer UI and animations (main screen)
-- Start / Pause / Resume / Stop flows wired to `TimerEngine` and `TimerViewModel`
-- Core Data model & persistence scaffolding (`FocusSession`, `Preset`, `UserSettings`)
-- Local `AgentGuidelines.md` added with coding-style guidance
+## In-Progress Focus
+- Bottom card animation polish so the presets and stats tray slides out of view during active sessions and returns on stop.
+- Persisting the distraction note field when a session ends so notes appear in stored session records.
 
-**In Progress / Near-Term Tasks**
-- Bottom-card behavior when timer is running (slide/hide) — UX tuning
-- Persisting the distraction note input when stopping a session
-- Implement forward/skip (next session) controls and their handlers
-- Finish migrating remaining UIKit color usages to SwiftUI-friendly `foregroundStyle`
-- Add unit tests for `TimerEngine` (start/pause/resume/stop) and ViewModel logic
-
-**Planned / Backlog Features**
-- Session history view with filters, session detail and analytics (daily/weekly totals, streaks)
-- Local notifications for session and break end times
-- Widgets (WidgetKit) and App Intents for quick actions / Siri integration
-- Optional cloud sync (CloudKit) and premium features
-- Watch companion and HealthKit integration (mindful minutes)
+## What's Pending
+- Implement forward/skip control logic plus UI affordances in `HomeView` and supporting view model methods.
+- Add unit tests covering timer lifecycle events, persistence interactions, and regression coverage for concurrency edge cases.
+- Build session history and analytics, including Core Data fetch requests, aggregation helpers, and SwiftUI screens.
+- Introduce local notification scheduling and cancellation hooks tied to session start/stop events.
 
 **Architecture (concise)**
 - UI: SwiftUI Views (`HomeView`, `HistoryView`, `SettingsView`)
@@ -111,8 +101,6 @@ Below are prioritized implementation tasks with short acceptance criteria. If yo
 
 - Add CI (GitHub Actions) to run tests on PRs
 	- Acceptance: PRs run a workflow that builds the app and runs unit tests on macOS runners.
-
-**Open TODOs (short)**
 
 **Open TODOs (short)**
 - [ ] Persist jot-note when ending a session
