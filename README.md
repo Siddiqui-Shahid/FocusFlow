@@ -55,6 +55,65 @@ FocusFlow is a Pomodoro-inspired focus coach built with SwiftUI. This repository
 - Avoid direct `Color(UIColor.*)` initializers — use SwiftUI `Color` and `foregroundStyle`.
 - Use `Task.sleep(for:)` with `Duration` where needed for Swift concurrency delays.
 
+**Contributing & Setup**
+
+- **Prerequisites:** macOS (latest stable), Xcode 15+ (recommended), iOS Simulator or physical device for testing.
+- **Clone & open:**
+
+```bash
+git clone https://github.com/Siddiqui-Shahid/FocusFlow.git
+cd FocusFlow
+open FocusFlow.xcodeproj
+```
+
+- **Signing:** If running on a device, set your team in the project signing settings (Targets → FocusFlow → Signing & Capabilities).
+- **Run locally:** Select the `FocusFlow` target in Xcode and run on a simulator or device.
+- **Run tests:** Open the Test navigator in Xcode and run available tests, or run via command line:
+
+```bash
+# Run tests for the app's test target (adjust device/name/os if needed)
+xcodebuild test -scheme FocusFlow -destination 'platform=iOS Simulator,name=iPhone 14'
+```
+
+- **Branching & PRs:** Create feature branches named `feature/<short-desc>` or `fix/<short-desc>`. Include screenshots or short recordings for UI changes and add unit tests for logic changes. Use descriptive commit messages (e.g., `feat(timer): add resume logic fix`).
+- **Style & lint:** Follow `AgentGuidelines.md` for Swift/SwiftUI conventions. Keep changes minimal and focused per PR.
+
+**Remaining UI & Engine Tasks (detailed)**
+
+Below are prioritized implementation tasks with short acceptance criteria. If you want, I can start working on any of these and open PRs for review.
+
+- Persist jot-note when ending a session
+	- Acceptance: When a session is stopped and the user enters a distraction note, the note is saved to the `FocusSession` record and appears in session detail.
+	- Files to touch: `HomeView.swift`, `TimerViewModel.swift`, Core Data model (`FocusSession`), `PersistenceController.swift`.
+
+- Bottom-card hide/slide behavior while timer runs
+	- Acceptance: When a session starts, bottom presets/stats card animates down and hides (or partially hides) leaving the timer centered; when stopped, it slides back in. Animation should be smooth on simulator.
+	- Files to touch: `HomeView.swift`, animation timing constants in view model.
+
+- Forward / Skip (next session) control
+	- Acceptance: Tapping forward ends current session (optionally prompts to save), then starts the next preset or break as configured.
+	- Files to touch: `HomeView.swift`, `TimerViewModel.swift`, `TimerEngine.swift`.
+
+- Central control polish (single button morph + icon crossfade)
+	- Acceptance: Play/pause is a single control that morphs size and icon with spring animation; accessibility labels update.
+	- Files to touch: `HomeView.swift`, assets for icons.
+
+- Progress ring visual fixes & edge cases
+	- Acceptance: Ring has no white gap at start, animates smoothly when timer advances, and supports long durations without precision drift. Unit tests for progress calculation in `TimerViewModel`.
+	- Files to touch: `TimerViewModel.swift`, `TimerEngine.swift`, `HomeView.swift`.
+
+- Background / resume edge cases
+	- Acceptance: If the app is backgrounded and resumed after a long time, `TimerEngine` computes elapsed correctly and UI shows accurate remaining time; resuming a paused session does not jump.
+	- Files to touch: `TimerEngine.swift`, `TimerViewModel.swift`.
+
+- Unit tests for `TimerEngine` and session flows
+	- Acceptance: Tests cover start/pause/resume/stop behaviors and basic persistence interactions. These run in CI and locally with `xcodebuild test`.
+
+- Add CI (GitHub Actions) to run tests on PRs
+	- Acceptance: PRs run a workflow that builds the app and runs unit tests on macOS runners.
+
+**Open TODOs (short)**
+
 **Open TODOs (short)**
 - [ ] Persist jot-note when ending a session
 - [ ] Add unit tests for `TimerEngine` and ViewModels
