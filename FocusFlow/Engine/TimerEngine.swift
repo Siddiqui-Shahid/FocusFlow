@@ -87,7 +87,7 @@ public actor TimerEngine {
         tickTask = Task { [weak self] in
             while !Task.isCancelled {
                 await self?.tick()
-                try? await Task.sleep(nanoseconds: 200_000_000) // 200ms for smooth UI
+                try? await Task.sleep(for: .milliseconds(200)) // 200ms for smooth UI
             }
         }
     }
