@@ -17,8 +17,10 @@ final class TimerViewModel: ObservableObject {
 
     func observeEngine() {
         streamTask?.cancel()
+        // Capture the engine in a local constant to avoid implicit property capture
+        let engine = timerEngine
         streamTask = Task { [weak self] in
-            for await state in await timerEngine.stream {
+            for await state in await engine.stream {
                 await MainActor.run {
                     self?.displayedState = state
                 }
@@ -29,7 +31,9 @@ final class TimerViewModel: ObservableObject {
     // UI actions
     func startPreset(seconds: TimeInterval) {
         Task {
-            await timerEngine.start(plannedDuration: seconds)
+            // capture engine to avoid implicit `self` capture in Swift 6
+            let engine = timerEngine
+            await engine.start(plannedDuration: seconds)
             // persist session start
             let ctx = persistence.newBackgroundContext()
             await ctx.perform {
@@ -40,15 +44,24 @@ final class TimerViewModel: ObservableObject {
     }
 
     func pause() {
-        Task { await timerEngine.pause() }
+        Task {
+            let engine = timerEngine
+            await engine.pause()
+        }
     }
 
     func resume() {
-        Task { await timerEngine.resume() }
+        Task {
+            let engine = timerEngine
+            await engine.resume()
+        }
     }
 
     func stop() {
-        Task { await timerEngine.stop() }
+        Task {
+            let engine = timerEngine
+            await engine.stop()
+        }
     }
 
     deinit {
@@ -73,5 +86,37 @@ final class TimerViewModel: ObservableObject {
 
     static func format(seconds: Int) -> String {
         String(format: "%02d:%02d", seconds / 60, seconds % 60)
+    }
+
+    // Progress between 0.0 and 1.0 for UI ring (0 = none, 1 = finished)
+    var progress: Double {
+        switch displayedState {
+        case .idle:
+            return 0
+        case .finished:
+            return 1
+        case .running(_, let planned, let elapsed):
+            guard planned > 0 else { return 0 }
+            return min(1, max(0, elapsed / planned))
+        case .paused(let elapsed, let planned):
+            guard planned > 0 else { return 0 }
+            return min(1, max(0, elapsed / planned))
+        }
+    }
+
+    // Simple human-facing mode title (e.g. "FOCUS" / "BREAK") - can be extended
+    var modeTitle: String {
+        switch displayedState {
+        case .idle, .finished:
+            return "FOCUS"
+        case .running, .paused:
+            return "FOCUS"
+        }
+    }
+
+    // Convenience boolean for UI
+    var isRunning: Bool {
+        if case .running = displayedState { return true }
+        return false
     }
 }

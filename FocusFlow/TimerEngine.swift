@@ -49,8 +49,11 @@ public actor TimerEngine {
     public func resume() async {
         switch state {
         case .paused(let elapsed, let planned):
-            let remaining = max(0, planned - elapsed)
-            state = .running(startTime: Date(), plannedDuration: remaining, elapsed: elapsed)
+            // To resume correctly we want the running state's "startTime" to reflect
+            // that `elapsed` time has already passed. Setting startTime = Date() - elapsed
+            // makes Date().timeIntervalSince(startTime) == elapsed + timeSinceResume.
+            let resumedStart = Date().addingTimeInterval(-elapsed)
+            state = .running(startTime: resumedStart, plannedDuration: planned, elapsed: elapsed)
             scheduleTicks()
             publishState()
         default:
