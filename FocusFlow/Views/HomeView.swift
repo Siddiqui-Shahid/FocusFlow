@@ -6,7 +6,6 @@ struct HomeView: View {
     @State private var noteText: String = ""
     @State private var selectedPresetID: UUID?
     @State private var showPresetSheet = false
-    @Namespace private var titleNamespace
 
     private var selectedPreset: PresetViewData? {
         if let id = selectedPresetID {
@@ -17,14 +16,46 @@ struct HomeView: View {
 
     var body: some View {
         NavigationStack {
-            GeometryReader { geo in
-                ZStack(alignment: .top) {
-                    Color(UIColor.systemGray6).ignoresSafeArea()
+            ZStack(alignment: .top) {
+                Color(UIColor.systemGray6).ignoresSafeArea()
 
-                    VStack {
-                        headerView
-                            .padding(.top, geo.safeAreaInsets.top + 12)
-                            .padding(.horizontal)
+                VStack {
+                    HStack {
+                        // Optional title when running
+                        if timerVM.isRunning {
+                          
+                                VStack(spacing: 6) {
+                                    Text("Deep Work")
+                                        .font(.system(size: 40, weight: .heavy))
+                                        .foregroundStyle(.primary)
+                                    
+                                    Text("POMODORO STRATEGY")
+                                        .font(.caption2.weight(.semibold))
+                                        .foregroundStyle(.secondary)
+                                        .tracking(2)
+                                }
+                            
+                            .padding([.top, .horizontal])
+                            .transition(.opacity)
+                        } else {
+                            // Top bar
+                            
+                            Text("FocusFlow")
+                                .font(.largeTitle.weight(.bold))
+                            
+                            Spacer()
+                            
+                            Button(action: { showPresetSheet = true }) {
+                                Image(systemName: "rectangle.stack.badge.plus")
+                                    .font(.title2)
+                                    .foregroundStyle(.secondary)
+                                }
+                            
+                        }
+                    }
+                    .padding([.top, .horizontal])
+                    .offset(y: timerVM.isRunning ? -36 : 0)
+                    .animation(.easeInOut(duration: 0.4), value: timerVM.isRunning)
                     Spacer()
                         // Timer circle
                         TimerCircleView()
@@ -50,7 +81,6 @@ struct HomeView: View {
                         .animation(.easeInOut(duration: 0.45), value: timerVM.isRunning)
                 }
                 // previously we animated the whole stack; removed so the timer circle stays fixed
-            }
             }
             .navigationBarHidden(true)
             .onAppear {
@@ -89,52 +119,6 @@ struct HomeView: View {
 
 // MARK: - Helpers Views
 // MARK: - Preview
-
-extension HomeView {
-    private var headerView: some View {
-        ZStack {
-            idleHeader
-                .opacity(timerVM.isRunning ? 0 : 1)
-            runningHeader
-                .opacity(timerVM.isRunning ? 1 : 0)
-        }
-        .frame(maxWidth: .infinity)
-        .frame(height: 110, alignment: .top)
-        .animation(.easeInOut(duration: 0.35), value: timerVM.isRunning)
-    }
-
-    private var idleHeader: some View {
-        HStack {
-            Text("FocusFlow")
-                .font(.largeTitle.weight(.bold))
-                .matchedGeometryEffect(id: "title", in: titleNamespace)
-
-            Spacer()
-
-            Button(action: { showPresetSheet = true }) {
-                Image(systemName: "rectangle.stack.badge.plus")
-                    .font(.title2)
-                    .foregroundStyle(.secondary)
-            }
-            .accessibilityLabel("Manage presets")
-        }
-    }
-
-    private var runningHeader: some View {
-        VStack(spacing: 6) {
-            Text("Deep Work")
-                .font(.system(size: 40, weight: .heavy))
-                .foregroundStyle(.primary)
-                .matchedGeometryEffect(id: "title", in: titleNamespace)
-
-            Text("POMODORO STRATEGY")
-                .font(.caption2.weight(.semibold))
-                .foregroundStyle(.secondary)
-                .tracking(2)
-        }
-        .frame(maxWidth: .infinity)
-    }
-}
 
 #if DEBUG
 struct HomeView_Previews: PreviewProvider {
