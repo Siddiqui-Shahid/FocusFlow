@@ -6,6 +6,8 @@ struct HomeView: View {
     @State private var noteText: String = ""
     @State private var selectedPresetID: UUID?
     @State private var showPresetSheet = false
+    @State private var topBarOpacity: Double = 1.0
+    @State private var showingRunningTitle: Bool = false
 
     private var selectedPreset: PresetViewData? {
         if let id = selectedPresetID {
@@ -22,8 +24,8 @@ struct HomeView: View {
 
                     VStack(spacing: 0) {
                         HStack {
-                            // Optional title when running
-                            if timerVM.isRunning {
+                            // Optional title when running (driven by `showingRunningTitle` so we can fade out, swap, fade in)
+                            if showingRunningTitle {
                                 VStack(spacing: 6) {
                                     Text("Deep Work")
                                         .font(.system(size: 40, weight: .heavy))
@@ -46,7 +48,7 @@ struct HomeView: View {
                         }
                         .padding([.top, .horizontal])
                         .frame(height: geo.size.height * 0.1)
-                        .animation(.easeInOut(duration: 0.4), value: timerVM.isRunning)
+                        .opacity(topBarOpacity)
 
                         Spacer()
 
@@ -82,6 +84,9 @@ struct HomeView: View {
             if selectedPresetID == nil {
                 selectedPresetID = presetStore.presets.first?.id
             }
+            // initialize title state
+            showingRunningTitle = timerVM.isRunning
+            topBarOpacity = 1.0
         }
         .onChange(of: presetStore.presets) { _, newValue in
             guard let first = newValue.first else {
@@ -90,6 +95,18 @@ struct HomeView: View {
             }
             if selectedPreset == nil {
                 selectedPresetID = first.id
+            }
+        }
+        .onChange(of: timerVM.isRunning) { newValue in
+            // Fade out quickly, swap content, then fade in slowly
+            withAnimation(.easeOut(duration: 0.18)) {
+                topBarOpacity = 0.0
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.18) {
+                showingRunningTitle = newValue
+                withAnimation(.easeIn(duration: 0.6)) {
+                    topBarOpacity = 1.0
+                }
             }
         }
         .sheet(isPresented: $showPresetSheet) {
