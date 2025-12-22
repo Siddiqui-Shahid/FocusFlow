@@ -31,7 +31,17 @@ final class TimerViewModel: ObservableObject {
                     #if DEBUG
                     print("[TimerViewModel] engine emitted state -> \(state) at \(Date())")
                     #endif
+                    
+                    let previousState = self?.displayedState
                     self?.displayedState = state
+                    
+                    // Handle session completion when timer naturally finishes
+                    if case .finished = state,
+                       case .running = previousState {
+                        Task {
+                            await self?.handleSessionCompletion()
+                        }
+                    }
                 }
             }
         }
@@ -93,7 +103,7 @@ final class TimerViewModel: ObservableObject {
                         if let latestSession = try? ctx.fetch(request).first,
                            let sessionType = latestSession.type {
                             Task {
-                                await notificationService.scheduleSessionCompletionNotification(
+                                await self.notificationService.scheduleSessionCompletionNotification(
                                     duration: remaining,
                                     sessionType: sessionType
                                 )
@@ -111,8 +121,14 @@ final class TimerViewModel: ObservableObject {
             let currentState = await engine.getState()
             await engine.stop()
             
-            // Cancel any pending notifications
-            await notificationService.cancelAllNotifications()
+            // Only cancel notifications if manually stopped (not naturally completed)
+            if case .finished = currentState {
+                // Timer completed naturally - don't cancel notification
+                print("[TimerViewModel] Timer completed naturally - keeping notification")
+            } else {
+                // Timer was manually stopped - cancel notification
+                await notificationService.cancelAllNotifications()
+            }
             
             // Update the latest session with completion status and notes
             let ctx = persistence.newBackgroundContext()
@@ -139,6 +155,24 @@ final class TimerViewModel: ObservableObject {
                     
                     try? ctx.save()
                 }
+            }
+        }
+    }
+    
+    private func handleSessionCompletion() async {
+        print("[TimerViewModel] Session completed naturally - updating database")
+        
+        // Mark session as completed in database
+        let ctx = persistence.newBackgroundContext()
+        await ctx.perform {
+            let request: NSFetchRequest<FocusSession> = FocusSession.fetchRequest()
+            request.sortDescriptors = [NSSortDescriptor(keyPath: \FocusSession.createdAt, ascending: false)]
+            request.fetchLimit = 1
+            
+            if let latestSession = try? ctx.fetch(request).first {
+                latestSession.completed = true
+                try? ctx.save()
+                print("[TimerViewModel] Marked session as completed in database")
             }
         }
     }

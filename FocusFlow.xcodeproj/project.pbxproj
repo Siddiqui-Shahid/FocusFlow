@@ -22,6 +22,7 @@
 		7A25E7052EE6CFFB009C91FF /* TimerControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25E6F12EE6CFFB009C91FF /* TimerControlsView.swift */; };
 		7A25E7062EE6CFFB009C91FF /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25E6EB2EE6CFFB009C91FF /* TimerViewModel.swift */; };
 		7ABB26D32EF95B97007DAF4B /* SessionHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB26D22EF95B97007DAF4B /* SessionHistoryView.swift */; };
+		7ABB26D62EF95E6B007DAF4B /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB26D42EF95E6B007DAF4B /* NotificationService.swift */; };
 		7ACD63F02EF57CC400F652EB /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD63EF2EF57CC400F652EB /* HomeViewModel.swift */; };
 		7AD5A1012F1AA00100A1A1A1 /* Preset+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5A1002F1AA00100A1A1A1 /* Preset+CoreData.swift */; };
 		7AD5A1032F1AA00100A1A1A1 /* PresetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5A1022F1AA00100A1A1A1 /* PresetStore.swift */; };
@@ -57,6 +58,7 @@
 		7A25E6F72EE6CFFB009C91FF /* FocusFlowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusFlowApp.swift; sourceTree = "<group>"; };
 		7A6EECC42EE5AFAC00A8F0C9 /* FocusFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ABB26D22EF95B97007DAF4B /* SessionHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHistoryView.swift; sourceTree = "<group>"; };
+		7ABB26D42EF95E6B007DAF4B /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		7ACD63EF2EF57CC400F652EB /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		7AD5A1002F1AA00100A1A1A1 /* Preset+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Preset+CoreData.swift"; sourceTree = "<group>"; };
 		7AD5A1022F1AA00100A1A1A1 /* PresetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetStore.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				7A25E6E82EE6CFFB009C91FF /* Persistence */,
 				7A25E6EA2EE6CFFB009C91FF /* Preview Content */,
 				7A25E6EC2EE6CFFB009C91FF /* ViewModels */,
+				7ABB26D52EF95E6B007DAF4B /* Services */,
 				7A25E6F52EE6CFFB009C91FF /* Views */,
 				7A25E6F62EE6CFFB009C91FF /* Assets.xcassets */,
 				7A25E6F72EE6CFFB009C91FF /* FocusFlowApp.swift */,
@@ -174,6 +177,14 @@
 				7AE0B10E2F1AA3A2001B37D5 /* FocusFlowTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		7ABB26D52EF95E6B007DAF4B /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				7ABB26D42EF95E6B007DAF4B /* NotificationService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		7AE0B1092F1AA3A2001B37D5 /* FocusFlowTests */ = {
@@ -294,6 +305,7 @@
 				7A25E6FC2EE6CFFB009C91FF /* HomeView.swift in Sources */,
 				7ABB26D32EF95B97007DAF4B /* SessionHistoryView.swift in Sources */,
 				7A25E6FD2EE6CFFB009C91FF /* FocusFlowApp.swift in Sources */,
+				7ABB26D62EF95E6B007DAF4B /* NotificationService.swift in Sources */,
 				7ACD63F02EF57CC400F652EB /* HomeViewModel.swift in Sources */,
 				7A25E6FE2EE6CFFB009C91FF /* TimerCircleView.swift in Sources */,
 				7A25E6FF2EE6CFFB009C91FF /* FocusSession+CoreData.swift in Sources */,
