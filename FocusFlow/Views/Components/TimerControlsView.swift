@@ -106,14 +106,6 @@ struct TimerControlsView: View {
     }
 }
 
-private extension TimerControlsView {
-    func timeAgoString(for date: Date) -> String {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .short
-        return formatter.localizedString(for: date, relativeTo: Date())
-    }
-}
-
 #if DEBUG
 struct TimerControlsView_Previews: PreviewProvider {
     static var previews: some View {
