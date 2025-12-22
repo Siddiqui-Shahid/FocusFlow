@@ -56,7 +56,15 @@ final class HomeViewModel: ObservableObject {
         }
 
         // wait for fade-out to complete
-        try? await Task.sleep(nanoseconds: UInt64(0.18 * 1_000_000_000))
+        do {
+            try await Task.sleep(nanoseconds: UInt64(0.18 * 1_000_000_000))
+        } catch is CancellationError {
+            // If the task was cancelled mid-animation, stop further UI updates.
+            return
+        } catch {
+            // Task.sleep is not expected to throw other errors; bail out defensively.
+            return
+        }
 
         // swap and fade in slowly
         showingRunningTitle = newValue
