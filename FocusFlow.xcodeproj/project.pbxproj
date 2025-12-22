@@ -21,6 +21,7 @@
 		7A25E7042EE6CFFB009C91FF /* StatCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25E6EF2EE6CFFB009C91FF /* StatCardView.swift */; };
 		7A25E7052EE6CFFB009C91FF /* TimerControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25E6F12EE6CFFB009C91FF /* TimerControlsView.swift */; };
 		7A25E7062EE6CFFB009C91FF /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25E6EB2EE6CFFB009C91FF /* TimerViewModel.swift */; };
+		7ABB26D32EF95B97007DAF4B /* SessionHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB26D22EF95B97007DAF4B /* SessionHistoryView.swift */; };
 		7ACD63F02EF57CC400F652EB /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD63EF2EF57CC400F652EB /* HomeViewModel.swift */; };
 		7AD5A1012F1AA00100A1A1A1 /* Preset+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5A1002F1AA00100A1A1A1 /* Preset+CoreData.swift */; };
 		7AD5A1032F1AA00100A1A1A1 /* PresetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5A1022F1AA00100A1A1A1 /* PresetStore.swift */; };
@@ -55,6 +56,7 @@
 		7A25E6F62EE6CFFB009C91FF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7A25E6F72EE6CFFB009C91FF /* FocusFlowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusFlowApp.swift; sourceTree = "<group>"; };
 		7A6EECC42EE5AFAC00A8F0C9 /* FocusFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7ABB26D22EF95B97007DAF4B /* SessionHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHistoryView.swift; sourceTree = "<group>"; };
 		7ACD63EF2EF57CC400F652EB /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		7AD5A1002F1AA00100A1A1A1 /* Preset+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Preset+CoreData.swift"; sourceTree = "<group>"; };
 		7AD5A1022F1AA00100A1A1A1 /* PresetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetStore.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				7A25E6F32EE6CFFB009C91FF /* ContentView.swift */,
 				7A25E6F42EE6CFFB009C91FF /* HomeView.swift */,
 				7AD5A1042F1AA00100A1A1A1 /* PresetManagementView.swift */,
+				7ABB26D22EF95B97007DAF4B /* SessionHistoryView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -289,6 +292,7 @@
 			files = (
 				7A25E6FB2EE6CFFB009C91FF /* TimerEngine.swift in Sources */,
 				7A25E6FC2EE6CFFB009C91FF /* HomeView.swift in Sources */,
+				7ABB26D32EF95B97007DAF4B /* SessionHistoryView.swift in Sources */,
 				7A25E6FD2EE6CFFB009C91FF /* FocusFlowApp.swift in Sources */,
 				7ACD63F02EF57CC400F652EB /* HomeViewModel.swift in Sources */,
 				7A25E6FE2EE6CFFB009C91FF /* TimerCircleView.swift in Sources */,

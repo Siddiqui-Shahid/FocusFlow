@@ -8,6 +8,7 @@ final class TimerViewModel: ObservableObject {
     private let timerEngine: TimerEngine
     private var streamTask: Task<Void, Never>?
     let persistence: PersistenceController
+    private let notificationService = NotificationService.shared
 
     enum SessionMode: String {
         case work
@@ -44,6 +45,12 @@ final class TimerViewModel: ObservableObject {
 
             let engine = timerEngine
             await engine.start(plannedDuration: duration)
+            
+            // Schedule notification for session completion
+            await notificationService.scheduleSessionCompletionNotification(
+                duration: duration,
+                sessionType: mode.rawValue
+            )
 
             let ctx = persistence.newBackgroundContext()
             await ctx.perform {
@@ -61,13 +68,40 @@ final class TimerViewModel: ObservableObject {
         Task {
             let engine = timerEngine
             await engine.pause()
+            // Cancel notification when paused
+            await notificationService.cancelAllNotifications()
         }
     }
 
     func resume() {
         Task {
             let engine = timerEngine
+            let currentState = await engine.getState()
             await engine.resume()
+            
+            // Reschedule notification for remaining time
+            if case .paused(let elapsed, let planned) = currentState {
+                let remaining = max(0, planned - elapsed)
+                if remaining > 0 {
+                    // Determine session type from current session
+                    let ctx = persistence.newBackgroundContext()
+                    await ctx.perform {
+                        let request: NSFetchRequest<FocusSession> = FocusSession.fetchRequest()
+                        request.sortDescriptors = [NSSortDescriptor(keyPath: \FocusSession.createdAt, ascending: false)]
+                        request.fetchLimit = 1
+                        
+                        if let latestSession = try? ctx.fetch(request).first,
+                           let sessionType = latestSession.type {
+                            Task {
+                                await notificationService.scheduleSessionCompletionNotification(
+                                    duration: remaining,
+                                    sessionType: sessionType
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -76,6 +110,9 @@ final class TimerViewModel: ObservableObject {
             let engine = timerEngine
             let currentState = await engine.getState()
             await engine.stop()
+            
+            // Cancel any pending notifications
+            await notificationService.cancelAllNotifications()
             
             // Update the latest session with completion status and notes
             let ctx = persistence.newBackgroundContext()

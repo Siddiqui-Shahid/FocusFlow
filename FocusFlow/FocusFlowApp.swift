@@ -13,6 +13,10 @@ struct FocusFlowApp: App {
                 .environment(\.managedObjectContext, persistence.viewContext)
                 .environmentObject(timerVM)
                 .environmentObject(presetStore)
+                .task {
+                    // Request notification permissions when app launches
+                    await NotificationService.shared.requestPermission()
+                }
         }
     }
 }
