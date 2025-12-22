@@ -6,34 +6,54 @@ FocusFlow is a Smart Pomodoro & Focus Coach built with SwiftUI. It helps users s
 - **Key files:** `TimerEngine.swift`, `TimerViewModel.swift`, `HomeView.swift`, `PersistenceController.swift`
 
 ## Feature Status
-| Phase | Feature | Status | Notes |
-| --- | --- | --- | --- |
-| MVP | Core timer engine with start, pause, resume, stop | Done | Implemented via `TimerEngine` actor and wired to `TimerViewModel`. |
-| MVP | Circular timer UI and primary controls | Done | Main screen layout and animations are in place. |
-| MVP | Core Data persistence for focus sessions | Done | `PersistenceController` and `FocusSession` model scaffolded. |
-| MVP | Custom presets with configurable work/break durations | Done | Preset management UI, persistence, and tests implemented. |
-| MVP | Persistent session history with daily/weekly totals + streaks | Pending | Requires history views, aggregation helpers, and streak logic. |
-| MVP | Local notifications when sessions or breaks finish | Pending | `NotificationService` wiring and permission flows not implemented. |
-| MVP | Breathing micro-routine during breaks | Pending | Needs animated view, timing, and audio assets. |
-| MVP | Theme support (light/dark + accent color) | Pending | Style system and per-user settings not in place. |
-| MVP | Onboarding with daily goal setup | Pending | No onboarding experience or goal tracking yet. |
-| MVP | Basic analytics (total focus minutes, streak) | Pending | Depends on session aggregation and UI presentation. |
-| MVP | Bottom card behavior and animations | In Progress | Needs tuning for hide/slide behavior while the timer runs. |
-| MVP | Distraction note capture on session stop | Done | Notes field captures user distractions during sessions; persisted to FocusSession Core Data records on stop. |
-| MVP | Header animation & HomeViewModel | Done | Header animation moved to `HomeViewModel`; includes flicker-guard and smoother swap animation. |
-| MVP | Preset last-edited timestamp (`updatedAt`) | Done | Preset edits now update and surface `updatedAt` across tiles and editor. |
-| MVP | Preset color picker + swatches | Done | Interactive `ColorPicker` and quick swatches added to preset editor with selected-state indicator. |
-| MVP | Automated tests for timer flows | Pending | Unit coverage required for `TimerEngine` and `TimerViewModel`. |
-| Platform | Forward/skip control for next session | Pending | Control logic and UI need to be added. |
-| Platform | Widget (WidgetKit) quick actions | Pending | Requires Widget extension, timeline provider, and intents. |
-| Platform | Siri / App Intents for starting presets | Pending | AppIntent definitions and integration still outstanding. |
-| Platform | Watch companion for remote controls | Pending | Watch target and connectivity layer not started. |
-| Platform | Cloud sync via CloudKit (premium) | Pending | Switch Core Data container to NSPersistentCloudKitContainer and handle conflicts. |
-| Platform | HealthKit mindful minutes export | Pending | HealthKit permissions, write calls, and privacy copy required. |
-| Polish | CI pipeline (lint + unit/UI tests) | Pending | GitHub Actions workflow and test coverage not yet added. |
-| Polish | In-app purchases for premium tiers | Pending | StoreKit 2 integration and paywall UX required. |
-| Polish | App Shortcuts, haptics, and accessibility polish | Pending | Accessibility audit and haptic feedback not implemented. |
-| Polish | App Store assets, preview video, TestFlight release | Pending | Marketing assets, TestFlight configuration, and release process todo. |
+
+### 🎯 MVP Core Features
+| Feature | Status | Notes |
+| --- | --- | --- |
+| **Timer System** | ✅ **Done** | Complete timer engine with all controls |
+| ↳ Core timer engine (start/pause/resume/stop) | ✅ Done | Implemented via `TimerEngine` actor and wired to `TimerViewModel` |
+| ↳ Circular timer UI and primary controls | ✅ Done | Main screen layout and animations are in place |
+| ↳ Header animation & transitions | ✅ Done | `HomeViewModel` with flicker-guard and smooth swap animation |
+| **Presets & Customization** | ✅ **Done** | Full preset management system |
+| ↳ Custom presets (work/break durations) | ✅ Done | Preset management UI, persistence, and tests implemented |
+| ↳ Color picker + swatches | ✅ Done | Interactive `ColorPicker` with visual selection indicators |
+| ↳ Preset timestamps (`updatedAt`) | ✅ Done | Preset edits update and surface `updatedAt` across tiles |
+| **Session Management** | ✅ **Done** | Complete session tracking |
+| ↳ Core Data persistence | ✅ Done | `PersistenceController` and `FocusSession` model scaffolded |
+| ↳ Distraction note capture | ✅ Done | Notes field persisted to FocusSession Core Data records on stop |
+| ↳ Session history view | ✅ Done | History view implemented with notes display |
+| ↳ Local notifications | ✅ Done | `NotificationService` with permission handling and completion alerts |
+| **UI Polish** | 🟡 **In Progress** | Animation and visual improvements |
+| ↳ Bottom card slide animations | 🟡 In Progress | Needs tuning for hide/slide behavior during timer runs |
+| ↳ Analytics dashboard | ⏸️ Pending | Session aggregation and UI presentation needed |
+| ↳ Breathing micro-routine | ⏸️ Pending | Animated view, timing, and audio assets needed |
+| ↳ Theme support (light/dark + accent) | ⏸️ Pending | Style system and per-user settings not in place |
+| **Foundation** | ⏸️ **Pending** | Development infrastructure |
+| ↳ Automated tests for timer flows | ⏸️ Pending | Unit coverage required for `TimerEngine` and `TimerViewModel` |
+| ↳ Onboarding with daily goals | ⏸️ Pending | No onboarding experience or goal tracking yet |
+
+### 🔧 Platform Integrations
+| Feature | Status | Notes |
+| --- | --- | --- |
+| **Controls & Navigation** | ⏸️ **Pending** | Enhanced user interactions |
+| ↳ Forward/skip control for sessions | ⏸️ Pending | Control logic and UI need to be added |
+| ↳ Widget (WidgetKit) quick actions | ⏸️ Pending | Widget extension, timeline provider, and intents required |
+| ↳ Siri / App Intents for presets | ⏸️ Pending | AppIntent definitions and integration outstanding |
+| **Device Integration** | ⏸️ **Pending** | Cross-device experiences |
+| ↳ Watch companion controls | ⏸️ Pending | Watch target and connectivity layer not started |
+| ↳ Cloud sync via CloudKit | ⏸️ Pending | Switch to NSPersistentCloudKitContainer and handle conflicts |
+| ↳ HealthKit mindful minutes export | ⏸️ Pending | HealthKit permissions, write calls, and privacy copy required |
+
+### ✨ Polish & Release
+| Feature | Status | Notes |
+| --- | --- | --- |
+| **Development Infrastructure** | ⏸️ **Pending** | CI/CD and quality assurance |
+| ↳ CI pipeline (lint + tests) | ⏸️ Pending | GitHub Actions workflow and test coverage not added |
+| ↳ App Shortcuts & haptics | ⏸️ Pending | Accessibility audit and haptic feedback not implemented |
+| **Monetization** | ⏸️ **Pending** | Revenue and premium features |
+| ↳ In-app purchases for premium | ⏸️ Pending | StoreKit 2 integration and paywall UX required |
+| **App Store Readiness** | ⏸️ **Pending** | Launch preparation |
+| ↳ App Store assets & TestFlight | ⏸️ Pending | Marketing assets, TestFlight config, and release process todo |
 
 ## In-Progress Focus
 - Bottom card animation polish so the presets and stats tray slides out of view during active sessions and returns on stop.
