@@ -14,22 +14,28 @@ struct PresetManagementView: View {
             List {
                 ForEach(presetStore.presets) { preset in
                     VStack(alignment: .leading, spacing: 4) {
-                        HStack {
-                            Text(preset.name)
-                                .font(.headline)
-                            if preset.isDefault {
-                                Text("Default")
-                                    .font(.caption2.weight(.semibold))
-                                    .padding(.horizontal, 6)
-                                    .padding(.vertical, 2)
-                                    .background(Color(UIColor.systemGray5))
-                                    .cornerRadius(6)
-                            }
-                        }
+                        HStack(alignment: .firstTextBaseline) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack {
+                                    Text(preset.displayTitle)
+                                        .font(.headline)
+                                    if preset.isDefault {
+                                        Text("Default")
+                                            .font(.caption2.weight(.semibold))
+                                            .padding(.horizontal, 6)
+                                            .padding(.vertical, 2)
+                                            .background(Color(UIColor.systemGray5))
+                                            .cornerRadius(6)
+                                    }
+                                }
 
-                        Text("Focus \(minutesString(preset.workDuration)) • Break \(minutesString(preset.breakDuration))")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                                Text("Focus \(minutesString(preset.workDuration)) • Break \(minutesString(preset.breakDuration))")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+
+                            Spacer()
+                        }
                     }
                     .padding(.vertical, 4)
                     .contentShape(Rectangle())
@@ -104,6 +110,19 @@ struct PresetManagementView: View {
     private func minutesString(_ seconds: TimeInterval) -> String {
         "\(Int(seconds / 60))m"
     }
+
+    private func timeAgoString(for date: Date) -> String {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .short
+        return formatter.localizedString(for: date, relativeTo: Date())
+    }
+
+    private func dateTimeString(for date: Date) -> String {
+        let fmt = DateFormatter()
+        fmt.dateStyle = .medium
+        fmt.timeStyle = .short
+        return fmt.string(from: date)
+    }
 }
 
 private struct PresetEditorView: View {
@@ -169,6 +188,13 @@ private struct PresetEditorView: View {
             }
         }
     }
+
+    private func dateTimeString(for date: Date) -> String {
+        let fmt = DateFormatter()
+        fmt.dateStyle = .medium
+        fmt.timeStyle = .short
+        return fmt.string(from: date)
+    }
 }
 
 private struct PresetDraft {
@@ -188,7 +214,7 @@ private struct PresetDraft {
     init() {}
 
     init(preset: PresetViewData) {
-        name = preset.name
+        name = preset.displayTitle
         workMinutes = Int(preset.workDuration / 60)
         breakMinutes = Int(preset.breakDuration / 60)
         cycles = preset.cycles

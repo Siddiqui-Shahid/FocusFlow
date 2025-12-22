@@ -18,6 +18,12 @@ struct PersistenceController {
             container.persistentStoreDescriptions = [desc]
         }
 
+        // Enable lightweight migration so adding optional attributes does not break existing stores
+        for desc in container.persistentStoreDescriptions {
+            desc.setOption(true as NSNumber, forKey: NSMigratePersistentStoresAutomaticallyOption)
+            desc.setOption(true as NSNumber, forKey: NSInferMappingModelAutomaticallyOption)
+        }
+
         container.loadPersistentStores { desc, error in
             if let error = error {
                 fatalError("Failed to load store: \(error)")

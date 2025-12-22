@@ -21,6 +21,7 @@
 		7A25E7042EE6CFFB009C91FF /* StatCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25E6EF2EE6CFFB009C91FF /* StatCardView.swift */; };
 		7A25E7052EE6CFFB009C91FF /* TimerControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25E6F12EE6CFFB009C91FF /* TimerControlsView.swift */; };
 		7A25E7062EE6CFFB009C91FF /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25E6EB2EE6CFFB009C91FF /* TimerViewModel.swift */; };
+		7ACD63F02EF57CC400F652EB /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD63EF2EF57CC400F652EB /* HomeViewModel.swift */; };
 		7AD5A1012F1AA00100A1A1A1 /* Preset+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5A1002F1AA00100A1A1A1 /* Preset+CoreData.swift */; };
 		7AD5A1032F1AA00100A1A1A1 /* PresetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5A1022F1AA00100A1A1A1 /* PresetStore.swift */; };
 		7AD5A1052F1AA00100A1A1A1 /* PresetManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5A1042F1AA00100A1A1A1 /* PresetManagementView.swift */; };
@@ -33,7 +34,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 7A6EECBC2EE5AFAC00A8F0C9 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 7A6EECC32EE5AFAC00A8F0C9 /* FocusFlow */;
+			remoteGlobalIDString = 7A6EECC32EE5AFAC00A8F0C9;
 			remoteInfo = FocusFlow;
 		};
 /* End PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 		7A25E6F62EE6CFFB009C91FF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7A25E6F72EE6CFFB009C91FF /* FocusFlowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusFlowApp.swift; sourceTree = "<group>"; };
 		7A6EECC42EE5AFAC00A8F0C9 /* FocusFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7ACD63EF2EF57CC400F652EB /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		7AD5A1002F1AA00100A1A1A1 /* Preset+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Preset+CoreData.swift"; sourceTree = "<group>"; };
 		7AD5A1022F1AA00100A1A1A1 /* PresetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetStore.swift; sourceTree = "<group>"; };
 		7AD5A1042F1AA00100A1A1A1 /* PresetManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetManagementView.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 		7A25E6EC2EE6CFFB009C91FF /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				7ACD63EF2EF57CC400F652EB /* HomeViewModel.swift */,
 				7A25E6EB2EE6CFFB009C91FF /* TimerViewModel.swift */,
 				7AD5A1022F1AA00100A1A1A1 /* PresetStore.swift */,
 			);
@@ -161,15 +164,6 @@
 			);
 			sourceTree = "<group>";
 		};
-		7AE0B1092F1AA3A2001B37D5 /* FocusFlowTests */ = {
-			isa = PBXGroup;
-			children = (
-				7AE0B10A2F1AA3A2001B37D5 /* PresetStoreTests.swift */,
-				7AE0B10B2F1AA3A2001B37D5 /* TimerViewModelTests.swift */,
-			);
-			path = FocusFlowTests;
-			sourceTree = "<group>";
-		};
 		7A6EECC52EE5AFAC00A8F0C9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -177,6 +171,15 @@
 				7AE0B10E2F1AA3A2001B37D5 /* FocusFlowTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		7AE0B1092F1AA3A2001B37D5 /* FocusFlowTests */ = {
+			isa = PBXGroup;
+			children = (
+				7AE0B10A2F1AA3A2001B37D5 /* PresetStoreTests.swift */,
+				7AE0B10B2F1AA3A2001B37D5 /* TimerViewModelTests.swift */,
+			);
+			path = FocusFlowTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -279,14 +282,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		7AE0B1122F1AA3A2001B37D5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 7A6EECC32EE5AFAC00A8F0C9 /* FocusFlow */;
-			targetProxy = 7AE0B1112F1AA3A2001B37D5 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXSourcesBuildPhase section */
 		7A6EECC02EE5AFAC00A8F0C9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -295,6 +290,7 @@
 				7A25E6FB2EE6CFFB009C91FF /* TimerEngine.swift in Sources */,
 				7A25E6FC2EE6CFFB009C91FF /* HomeView.swift in Sources */,
 				7A25E6FD2EE6CFFB009C91FF /* FocusFlowApp.swift in Sources */,
+				7ACD63F02EF57CC400F652EB /* HomeViewModel.swift in Sources */,
 				7A25E6FE2EE6CFFB009C91FF /* TimerCircleView.swift in Sources */,
 				7A25E6FF2EE6CFFB009C91FF /* FocusSession+CoreData.swift in Sources */,
 				7A25E7002EE6CFFB009C91FF /* PersistenceController.swift in Sources */,
@@ -320,6 +316,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7AE0B1122F1AA3A2001B37D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7A6EECC32EE5AFAC00A8F0C9 /* FocusFlow */;
+			targetProxy = 7AE0B1112F1AA3A2001B37D5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		7A6EECD02EE5AFAD00A8F0C9 /* Debug */ = {

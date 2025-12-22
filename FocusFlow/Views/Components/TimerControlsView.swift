@@ -11,7 +11,7 @@ struct TimerControlsView: View {
     var body: some View {
         VStack(spacing: 12) {
             if let preset = selectedPreset {
-                Text(preset.name.uppercased())
+                Text(preset.displayTitle.uppercased())
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(.secondary)
             }
@@ -103,6 +103,14 @@ struct TimerControlsView: View {
                 timerVM.resume()
             }
         }
+    }
+}
+
+private extension TimerControlsView {
+    func timeAgoString(for date: Date) -> String {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .short
+        return formatter.localizedString(for: date, relativeTo: Date())
     }
 }
 
