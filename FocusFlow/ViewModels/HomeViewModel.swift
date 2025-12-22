@@ -12,6 +12,11 @@ final class HomeViewModel: ObservableObject {
     init() {}
 
     func bind(to timerVM: TimerViewModel) {
+        // Guard against re-binding to the same timer to prevent creating duplicate observation tasks
+        guard self.timerVM !== timerVM else {
+            return
+        }
+        
         self.timerVM = timerVM
         showingRunningTitle = timerVM.isRunning
         topBarOpacity = 1.0
