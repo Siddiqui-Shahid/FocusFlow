@@ -74,20 +74,33 @@ final class TimerViewModel: ObservableObject {
     func stop(notes: String? = nil) {
         Task {
             let engine = timerEngine
+            let currentState = await engine.getState()
             await engine.stop()
             
-            // Save notes to the current session if provided
-            if let notes = notes?.trimmingCharacters(in: .whitespacesAndNewlines), !notes.isEmpty {
-                let ctx = persistence.newBackgroundContext()
-                await ctx.perform {
-                    let request: NSFetchRequest<FocusSession> = FocusSession.fetchRequest()
-                    request.sortDescriptors = [NSSortDescriptor(keyPath: \FocusSession.createdAt, ascending: false)]
-                    request.fetchLimit = 1
-                    
-                    if let latestSession = try? ctx.fetch(request).first {
-                        latestSession.notes = notes
-                        try? ctx.save()
+            // Update the latest session with completion status and notes
+            let ctx = persistence.newBackgroundContext()
+            await ctx.perform {
+                let request: NSFetchRequest<FocusSession> = FocusSession.fetchRequest()
+                request.sortDescriptors = [NSSortDescriptor(keyPath: \FocusSession.createdAt, ascending: false)]
+                request.fetchLimit = 1
+                
+                if let latestSession = try? ctx.fetch(request).first {
+                    // Calculate elapsed time from current state
+                    switch currentState {
+                    case .running(_, _, let elapsed), .paused(let elapsed, _):
+                        latestSession.markCompleted(elapsedTime: elapsed)
+                    case .finished:
+                        latestSession.completed = true
+                    default:
+                        break
                     }
+                    
+                    // Save notes if provided
+                    if let notes = notes?.trimmingCharacters(in: .whitespacesAndNewlines), !notes.isEmpty {
+                        latestSession.notes = notes
+                    }
+                    
+                    try? ctx.save()
                 }
             }
         }

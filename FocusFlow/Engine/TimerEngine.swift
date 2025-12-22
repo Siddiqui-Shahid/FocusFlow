@@ -66,6 +66,10 @@ public actor TimerEngine {
         state = .idle
         publishState()
     }
+    
+    public func getState() async -> TimerState {
+        return state
+    }
 
     // compute current remaining (safe)
     public func remaining() -> TimeInterval {

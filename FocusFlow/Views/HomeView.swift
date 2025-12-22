@@ -6,6 +6,7 @@ struct HomeView: View {
     @State private var noteText: String = ""
     @State private var selectedPresetID: UUID?
     @State private var showPresetSheet = false
+    @State private var showHistorySheet = false
     @StateObject private var homeVM = HomeViewModel()
 
     private var selectedPreset: PresetViewData? {
@@ -38,12 +39,21 @@ struct HomeView: View {
 
                                 Spacer()
 
-                                Button(action: { showPresetSheet = true }) {
-                                    Image(systemName: "rectangle.stack.badge.plus")
-                                        .font(.title2)
-                                        .foregroundStyle(.secondary)
+                                HStack(spacing: 16) {
+                                    Button(action: { showHistorySheet = true }) {
+                                        Image(systemName: "clock.arrow.circlepath")
+                                            .font(.title2)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                    .accessibilityLabel("Session history")
+                                    
+                                    Button(action: { showPresetSheet = true }) {
+                                        Image(systemName: "rectangle.stack.badge.plus")
+                                            .font(.title2)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                    .accessibilityLabel("Manage presets")
                                 }
-                                .accessibilityLabel("Manage presets")
                             }
                         }
                         .padding([.top, .horizontal])
@@ -100,6 +110,9 @@ struct HomeView: View {
         .sheet(isPresented: $showPresetSheet) {
             PresetManagementView()
                 .environmentObject(presetStore)
+        }
+        .sheet(isPresented: $showHistorySheet) {
+            SessionHistoryView()
         }
     }
 

@@ -23,16 +23,22 @@ extension FocusSession {
                        startTime: Date,
                        plannedDuration: TimeInterval,
                        type: String = "work",
-                       presetId: UUID? = nil) -> FocusSession {
+                       presetId: UUID? = nil,
+                       completed: Bool = false) -> FocusSession {
         let session = FocusSession(context: context)
         session.id = UUID()
         session.startTime = startTime
         session.plannedDuration = Int64(plannedDuration)
         session.elapsedSeconds = 0
-        session.completed = false
+        session.completed = completed
         session.type = type
         session.createdAt = Date()
         session.presetId = presetId
         return session
+    }
+    
+    func markCompleted(elapsedTime: TimeInterval) {
+        self.elapsedSeconds = Int64(elapsedTime)
+        self.completed = true
     }
 }
