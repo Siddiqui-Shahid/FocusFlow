@@ -127,6 +127,24 @@ Below are prioritized implementation tasks with short acceptance criteria. If yo
 - [ ] Add local notifications scheduling/cancellation tests
 - [ ] Finish remaining style / color migrations
 
+## Recommended Next Feature (pick one)
+Here are three prioritized next tasks you can take; each is small-to-medium scope and provides meaningful user or codebase value:
+
+1. **Consolidate color utilities & project integration** (recommended)
+	- Move/remove file-local hex helpers and ensure `Utilities/ColorHex.swift` is added to the Xcode target (update `project.pbxproj`).
+	- Replace remaining local conversions with the shared extension API (`Color(hex:)`, `UIColor(hex:)`, `Color.toHex()`).
+	- Why: removes duplication, reduces build fragility, and centralizes color logic for future features (themes, presets sharing).
+
+2. **Add unit tests for `TimerEngine` and `TimerViewModel`**
+	- Add focused tests covering start/pause/resume/stop, elapsed-time calculation across suspends, and progress ring calculations.
+	- Why: high ROI — prevents regressions in time-critical code and makes future refactors safer.
+
+3. **Persist distraction notes when stopping a session**
+	- Wire the editor/UI so a user-entered note is saved with `FocusSession` on stop and appears in session detail.
+	- Why: increases the product's usefulness (journaling + review) and is a visible user-facing improvement.
+
+If you want, I can implement the first option (consolidate color utilities and add the file to the Xcode target) as a quick follow-up PR and remove the local helpers used in views.
+
 **How to help / contribute**
 - Fork the repo, create a branch for your change, and open a PR describing the change.
 - If you work on UI polish, include screenshots or short screen recordings in the PR.
