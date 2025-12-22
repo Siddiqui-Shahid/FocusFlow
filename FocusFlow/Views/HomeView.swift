@@ -6,7 +6,7 @@ struct HomeView: View {
     @State private var noteText: String = ""
     @State private var selectedPresetID: UUID?
     @State private var showPresetSheet = false
-    @Namespace private var titleNamespace
+    @StateObject private var homeVM = HomeViewModel()
 
     private var selectedPreset: PresetViewData? {
         if let id = selectedPresetID {
@@ -21,56 +21,84 @@ struct HomeView: View {
                 ZStack(alignment: .top) {
                     Color(UIColor.systemGray6).ignoresSafeArea()
 
-                    VStack {
-                        headerView
-                            .padding(.top, geo.safeAreaInsets.top + 12)
-                            .padding(.horizontal)
-                    Spacer()
+                    VStack(spacing: 0) {
+                        HStack {
+                            // Optional title when running (driven by `showingRunningTitle` so we can fade out, swap, fade in)
+                            if homeVM.showingRunningTitle {
+                                VStack(spacing: 6) {
+                                    Text("Deep Work")
+                                        .font(.system(size: 40, weight: .heavy))
+                                        .foregroundStyle(.primary)
+                                }
+                                .transition(.opacity)
+                            } else {
+                                // Top bar
+                                Text("FocusFlow")
+                                    .font(.largeTitle.weight(.bold))
+
+                                Spacer()
+
+                                Button(action: { showPresetSheet = true }) {
+                                    Image(systemName: "rectangle.stack.badge.plus")
+                                        .font(.title2)
+                                        .foregroundStyle(.secondary)
+                                }
+                                .accessibilityLabel("Manage presets")
+                            }
+                        }
+                        .padding([.top, .horizontal])
+                        .frame(height: geo.size.height * 0.1)
+                        .opacity(homeVM.topBarOpacity)
+
+                        Spacer()
+
                         // Timer circle
                         TimerCircleView()
 
-                    // Controls area (single central play/pause that animates)
-                    TimerControlsView(noteText: $noteText,
-                                      selectedPreset: selectedPreset,
-                                      startFocusAction: startFocus,
-                                      startBreakAction: startBreak)
+                        // Controls area (single central play/pause that animates)
+                        TimerControlsView(noteText: $noteText,
+                                          selectedPreset: selectedPreset,
+                                          startFocusAction: startFocus,
+                                          startBreakAction: startBreak)
 
-                    Spacer()
+                        Spacer()
 
-                    // Bottom card - hide by translating off the bottom when session is running
-                    BottomCardView(presets: presetStore.presets,
-                                   selectedPresetID: selectedPreset?.id,
-                                   onSelect: { preset in selectedPresetID = preset.id },
-                                   onStartFocus: { timerVM.start(preset: $0, mode: .work) },
-                                   onStartBreak: { timerVM.start(preset: $0, mode: .breakTime) },
-                                   onManageTap: { showPresetSheet = true })
-                        .padding(.horizontal)
-                        .padding(.bottom, 8)
-                        .offset(y: timerVM.isRunning ? 500 : 0)
-                        .animation(.easeInOut(duration: 0.45), value: timerVM.isRunning)
-                }
-                // previously we animated the whole stack; removed so the timer circle stays fixed
-            }
-            }
-            .navigationBarHidden(true)
-            .onAppear {
-                if selectedPresetID == nil {
-                    selectedPresetID = presetStore.presets.first?.id
+                        // Bottom card - hide by translating off the bottom when session is running
+                        BottomCardView(presets: presetStore.presets,
+                                       selectedPresetID: selectedPreset?.id,
+                                       onSelect: { preset in selectedPresetID = preset.id },
+                                       onStartFocus: { timerVM.start(preset: $0, mode: .work) },
+                                       onStartBreak: { timerVM.start(preset: $0, mode: .breakTime) },
+                                       onManageTap: { showPresetSheet = true })
+                            .padding(.horizontal)
+                            .padding(.bottom, 8)
+                            .offset(y: timerVM.isRunning ? 500 : 0)
+                            .animation(.easeInOut(duration: 0.45), value: timerVM.isRunning)
+                    }
+                    // previously we animated the whole stack; removed so the timer circle stays fixed
                 }
             }
-            .onChange(of: presetStore.presets) { newValue in
-                guard let first = newValue.first else {
-                    selectedPresetID = nil
-                    return
-                }
-                if selectedPreset == nil {
-                    selectedPresetID = first.id
-                }
+        }
+        .navigationBarHidden(true)
+        .onAppear {
+            if selectedPresetID == nil {
+                selectedPresetID = presetStore.presets.first?.id
             }
-            .sheet(isPresented: $showPresetSheet) {
-                PresetManagementView()
-                    .environmentObject(presetStore)
+            // bind HomeViewModel to TimerViewModel so it can observe running state
+            homeVM.bind(to: timerVM)
+        }
+        .onChange(of: presetStore.presets) { _, newValue in
+            guard let first = newValue.first else {
+                selectedPresetID = nil
+                return
             }
+            if selectedPreset == nil {
+                selectedPresetID = first.id
+            }
+        }
+        .sheet(isPresented: $showPresetSheet) {
+            PresetManagementView()
+                .environmentObject(presetStore)
         }
     }
 
@@ -89,52 +117,6 @@ struct HomeView: View {
 
 // MARK: - Helpers Views
 // MARK: - Preview
-
-extension HomeView {
-    private var headerView: some View {
-        ZStack {
-            idleHeader
-                .opacity(timerVM.isRunning ? 0 : 1)
-            runningHeader
-                .opacity(timerVM.isRunning ? 1 : 0)
-        }
-        .frame(maxWidth: .infinity)
-        .frame(height: 110, alignment: .top)
-        .animation(.easeInOut(duration: 0.35), value: timerVM.isRunning)
-    }
-
-    private var idleHeader: some View {
-        HStack {
-            Text("FocusFlow")
-                .font(.largeTitle.weight(.bold))
-                .matchedGeometryEffect(id: "title", in: titleNamespace)
-
-            Spacer()
-
-            Button(action: { showPresetSheet = true }) {
-                Image(systemName: "rectangle.stack.badge.plus")
-                    .font(.title2)
-                    .foregroundStyle(.secondary)
-            }
-            .accessibilityLabel("Manage presets")
-        }
-    }
-
-    private var runningHeader: some View {
-        VStack(spacing: 6) {
-            Text("Deep Work")
-                .font(.system(size: 40, weight: .heavy))
-                .foregroundStyle(.primary)
-                .matchedGeometryEffect(id: "title", in: titleNamespace)
-
-            Text("POMODORO STRATEGY")
-                .font(.caption2.weight(.semibold))
-                .foregroundStyle(.secondary)
-                .tracking(2)
-        }
-        .frame(maxWidth: .infinity)
-    }
-}
 
 #if DEBUG
 struct HomeView_Previews: PreviewProvider {

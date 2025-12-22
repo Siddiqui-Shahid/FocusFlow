@@ -27,6 +27,9 @@ final class TimerViewModel: ObservableObject {
         streamTask = Task { [weak self] in
             for await state in await engine.stream {
                 await MainActor.run {
+                    #if DEBUG
+                    print("[TimerViewModel] engine emitted state -> \(state) at \(Date())")
+                    #endif
                     self?.displayedState = state
                 }
             }

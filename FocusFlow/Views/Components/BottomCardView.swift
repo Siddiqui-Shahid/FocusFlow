@@ -57,8 +57,8 @@ private struct PresetTileView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text(preset.name)
+                HStack {
+                Text(preset.displayTitle)
                     .font(.headline)
                 if isSelected {
                     Image(systemName: "checkmark.circle.fill")

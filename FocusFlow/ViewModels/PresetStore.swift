@@ -13,6 +13,25 @@ struct PresetViewData: Identifiable, Equatable {
     var isDefault: Bool
     var sortOrder: Int
 
+    // Precompiled regex to remove trailing " <digits>/<digits>" pattern from the name.
+    private static let displayTitleRegex: NSRegularExpression? = try? NSRegularExpression(
+        pattern: "\\s\\d+\\/\\d+$",
+        options: []
+    )
+
+    // A cleaned title that strips duration hints from the name (e.g. "Pomodoro 25/5" -> "Pomodoro")
+    var displayTitle: String {
+        guard let regex = Self.displayTitleRegex else {
+            return name
+        }
+        let range = NSRange(name.startIndex..<name.endIndex, in: name)
+        let cleaned = regex.stringByReplacingMatches(in: name, options: [], range: range, withTemplate: "")
+        return cleaned.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    var workMinutes: Int { Int(workDuration / 60) }
+    var breakMinutes: Int { Int(breakDuration / 60) }
+
     init?(managedObject: Preset) {
         guard let identifier = managedObject.id,
               let presetName = managedObject.name else { return nil }
