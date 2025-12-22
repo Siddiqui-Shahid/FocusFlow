@@ -19,7 +19,7 @@ FocusFlow is a Smart Pomodoro & Focus Coach built with SwiftUI. It helps users s
 | MVP | Onboarding with daily goal setup | Pending | No onboarding experience or goal tracking yet. |
 | MVP | Basic analytics (total focus minutes, streak) | Pending | Depends on session aggregation and UI presentation. |
 | MVP | Bottom card behavior and animations | In Progress | Needs tuning for hide/slide behavior while the timer runs. |
-| MVP | Distraction note capture on session stop | In Progress | Data pipeline exists; persistence wiring still pending. |
+| MVP | Distraction note capture on session stop | Done | Notes field captures user distractions during sessions; persisted to FocusSession Core Data records on stop. |
 | MVP | Header animation & HomeViewModel | Done | Header animation moved to `HomeViewModel`; includes flicker-guard and smoother swap animation. |
 | MVP | Preset last-edited timestamp (`updatedAt`) | Done | Preset edits now update and surface `updatedAt` across tiles and editor. |
 | MVP | Preset color picker + swatches | Done | Interactive `ColorPicker` and quick swatches added to preset editor with selected-state indicator. |
