@@ -43,6 +43,7 @@ struct HomeView: View {
                                         .font(.title2)
                                         .foregroundStyle(.secondary)
                                 }
+                                .accessibilityLabel("Manage presets")
                             }
                         }
                         .padding([.top, .horizontal])
