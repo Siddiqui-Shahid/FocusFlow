@@ -251,13 +251,6 @@ private struct PresetEditorView: View {
             }
         }
     }
-
-    private func dateTimeString(for date: Date) -> String {
-        let fmt = DateFormatter()
-        fmt.dateStyle = .medium
-        fmt.timeStyle = .short
-        return fmt.string(from: date)
-    }
 }
 
 private struct PresetDraft {
