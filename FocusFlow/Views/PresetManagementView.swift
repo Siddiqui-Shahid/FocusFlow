@@ -111,19 +111,6 @@ struct PresetManagementView: View {
     private func minutesString(_ seconds: TimeInterval) -> String {
         "\(Int(seconds / 60))m"
     }
-
-    private func timeAgoString(for date: Date) -> String {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .short
-        return formatter.localizedString(for: date, relativeTo: Date())
-    }
-
-    private func dateTimeString(for date: Date) -> String {
-        let fmt = DateFormatter()
-        fmt.dateStyle = .medium
-        fmt.timeStyle = .short
-        return fmt.string(from: date)
-    }
 }
 
 // Local helpers to convert UIColor <-> Hex to avoid depending on external utils during build
