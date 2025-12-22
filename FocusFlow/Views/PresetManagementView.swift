@@ -176,23 +176,38 @@ private struct PresetEditorView: View {
 
                         HStack(spacing: 10) {
                             // quick color swatches (hex strings)
-                            ForEach(["#007AFF", "#34C759", "#FF9500", "#FF2D55", "#8E8E93"], id: \.self) { (hex: String) in
-                                let swatch = uiColorFromHex(hex).map { Color(uiColor: $0) } ?? Color.blue
+                            ForEach(["#007AFF", "#34C759", "#FF9500", "#FF2D55", "#8E8E93"], id: \.self) { hex in
+                                let swatchHex = hex.uppercased()
+                                let swatch = uiColorFromHex(swatchHex).map { Color(uiColor: $0) } ?? Color.blue
+
                                 Button(action: {
                                     draft.accentColor = swatch
-                                    draft.accentColorHex = hex
+                                    draft.accentColorHex = swatchHex
                                 }) {
-                                    Circle()
-                                        .fill(swatch)
-                                        .frame(width: 28, height: 28)
-                                        .overlay(Circle().stroke(Color(UIColor.systemBackground), lineWidth: 1))
+                                    ZStack {
+                                        Circle()
+                                            .fill(swatch)
+                                            .frame(width: 28, height: 28)
+
+                                        if draft.accentColorHex.trimmingCharacters(in: .whitespacesAndNewlines).caseInsensitiveCompare(swatchHex) == .orderedSame {
+                                            // selected state: larger border + check
+                                            Circle()
+                                                .strokeBorder(Color(UIColor.systemBackground), lineWidth: 3)
+                                                .frame(width: 36, height: 36)
+
+                                            Image(systemName: "checkmark")
+                                                .font(.system(size: 12, weight: .bold))
+                                                .foregroundColor(.white)
+                                        } else {
+                                            Circle()
+                                                .stroke(Color(UIColor.systemBackground), lineWidth: 1)
+                                                .frame(width: 28, height: 28)
+                                        }
+                                    }
                                 }
+                                .buttonStyle(PlainButtonStyle())
                             }
                         }
-
-                        TextField("Hex (fallback)", text: $draft.accentColorHex)
-                            .textInputAutocapitalization(.characters)
-                            .disableAutocorrection(true)
                     }
                 }
 
