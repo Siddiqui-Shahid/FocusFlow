@@ -59,7 +59,8 @@ struct HomeView: View {
                         TimerControlsView(noteText: $noteText,
                                           selectedPreset: selectedPreset,
                                           startFocusAction: startFocus,
-                                          startBreakAction: startBreak)
+                                          startBreakAction: startBreak,
+                                          stopAction: stopWithNotes)
 
                         Spacer()
 
@@ -112,6 +113,12 @@ struct HomeView: View {
     private func startBreak() {
         guard let preset = selectedPreset else { return }
         timerVM.start(preset: preset, mode: .breakTime)
+    }
+    
+    private func stopWithNotes() {
+        let notes = noteText.trimmingCharacters(in: .whitespacesAndNewlines)
+        timerVM.stop(notes: notes.isEmpty ? nil : notes)
+        noteText = "" // Clear notes after stopping
     }
 }
 

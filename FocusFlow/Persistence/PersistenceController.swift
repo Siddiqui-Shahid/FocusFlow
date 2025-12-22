@@ -61,6 +61,7 @@ struct PersistenceController {
             attr("elapsedSeconds", .integer64AttributeType, isOptional: false),
             attr("completed", .booleanAttributeType),
             attr("type", .stringAttributeType, isOptional: true),
+            attr("notes", .stringAttributeType, isOptional: true),
             attr("createdAt", .dateAttributeType, isOptional: false),
             attr("presetId", .UUIDAttributeType, isOptional: true)
         ]

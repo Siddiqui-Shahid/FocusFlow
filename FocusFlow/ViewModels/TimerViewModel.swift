@@ -71,10 +71,25 @@ final class TimerViewModel: ObservableObject {
         }
     }
 
-    func stop() {
+    func stop(notes: String? = nil) {
         Task {
             let engine = timerEngine
             await engine.stop()
+            
+            // Save notes to the current session if provided
+            if let notes = notes?.trimmingCharacters(in: .whitespacesAndNewlines), !notes.isEmpty {
+                let ctx = persistence.newBackgroundContext()
+                await ctx.perform {
+                    let request: NSFetchRequest<FocusSession> = FocusSession.fetchRequest()
+                    request.sortDescriptors = [NSSortDescriptor(keyPath: \FocusSession.createdAt, ascending: false)]
+                    request.fetchLimit = 1
+                    
+                    if let latestSession = try? ctx.fetch(request).first {
+                        latestSession.notes = notes
+                        try? ctx.save()
+                    }
+                }
+            }
         }
     }
 

@@ -7,6 +7,7 @@ struct TimerControlsView: View {
     var selectedPreset: PresetViewData?
     var startFocusAction: () -> Void
     var startBreakAction: () -> Void
+    var stopAction: (() -> Void)?
 
     var body: some View {
         VStack(spacing: 12) {
@@ -28,7 +29,11 @@ struct TimerControlsView: View {
 
             HStack(spacing: 48) {
                 if timerVM.isRunning {
-                    Button(action: { withAnimation { timerVM.stop() } }) {
+                    Button(action: { 
+                        withAnimation { 
+                            stopAction?() ?? timerVM.stop()
+                        } 
+                    }) {
                         Circle()
                             .fill(Color(UIColor.systemGray5))
                             .frame(width: 64, height: 64)
@@ -115,7 +120,8 @@ struct TimerControlsView_Previews: PreviewProvider {
         TimerControlsView(noteText: .constant(""),
                           selectedPreset: presetStore.presets.first,
                           startFocusAction: {},
-                          startBreakAction: {})
+                          startBreakAction: {},
+                          stopAction: {})
             .environmentObject(vm)
             .previewLayout(.sizeThatFits)
             .padding()

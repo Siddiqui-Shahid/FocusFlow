@@ -13,6 +13,7 @@ public class FocusSession: NSManagedObject {
     @NSManaged public var elapsedSeconds: Int64
     @NSManaged public var completed: Bool
     @NSManaged public var type: String?
+    @NSManaged public var notes: String?
     @NSManaged public var createdAt: Date?
     @NSManaged public var presetId: UUID?
 }
