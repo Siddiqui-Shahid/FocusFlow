@@ -1,5 +1,42 @@
 import SwiftUI
 import UIKit
+// Local helpers to convert UIColor <-> Hex to avoid depending on external utils during build
+// (Using shared Color/UIColor extensions in Utilities/ColorHex.swift)
+
+// Local helpers to convert UIColor <-> Hex (kept here so file compiles even if Utilities isn't added to the Xcode target)
+fileprivate func uiColorFromHex(_ hex: String) -> UIColor? {
+    var s = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+    if s.hasPrefix("#") { s.removeFirst() }
+    let len = s.count
+    guard len == 6 || len == 8 else { return nil }
+    var hexValue: UInt64 = 0
+    guard Scanner(string: s).scanHexInt64(&hexValue) else { return nil }
+    var r: UInt64 = 0, g: UInt64 = 0, b: UInt64 = 0, a: UInt64 = 255
+    if len == 6 {
+        r = (hexValue & 0xFF0000) >> 16
+        g = (hexValue & 0x00FF00) >> 8
+        b = (hexValue & 0x0000FF)
+    } else {
+        r = (hexValue & 0xFF000000) >> 24
+        g = (hexValue & 0x00FF0000) >> 16
+        b = (hexValue & 0x0000FF00) >> 8
+        a = (hexValue & 0x000000FF)
+    }
+    return UIColor(red: CGFloat(r) / 255.0,
+                   green: CGFloat(g) / 255.0,
+                   blue: CGFloat(b) / 255.0,
+                   alpha: CGFloat(a) / 255.0)
+}
+
+fileprivate func uiColorToHex(_ ui: UIColor, includeAlpha: Bool = false) -> String? {
+    var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+    guard ui.getRed(&r, green: &g, blue: &b, alpha: &a) else { return nil }
+    if includeAlpha {
+        return String(format: "#%02X%02X%02X%02X", Int(r * 255), Int(g * 255), Int(b * 255), Int(a * 255))
+    } else {
+        return String(format: "#%02X%02X%02X", Int(r * 255), Int(g * 255), Int(b * 255))
+    }
+}
 
 struct PresetManagementView: View {
     @EnvironmentObject var presetStore: PresetStore
@@ -113,40 +150,7 @@ struct PresetManagementView: View {
     }
 }
 
-// Local helpers to convert UIColor <-> Hex to avoid depending on external utils during build
-fileprivate func uiColorFromHex(_ hex: String) -> UIColor? {
-    var s = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-    if s.hasPrefix("#") { s.removeFirst() }
-    let len = s.count
-    guard len == 6 || len == 8 else { return nil }
-    var hexValue: UInt64 = 0
-    guard Scanner(string: s).scanHexInt64(&hexValue) else { return nil }
-    var r: UInt64 = 0, g: UInt64 = 0, b: UInt64 = 0, a: UInt64 = 255
-    if len == 6 {
-        r = (hexValue & 0xFF0000) >> 16
-        g = (hexValue & 0x00FF00) >> 8
-        b = (hexValue & 0x0000FF)
-    } else {
-        r = (hexValue & 0xFF000000) >> 24
-        g = (hexValue & 0x00FF0000) >> 16
-        b = (hexValue & 0x0000FF00) >> 8
-        a = (hexValue & 0x000000FF)
-    }
-    return UIColor(red: CGFloat(r) / 255.0,
-                   green: CGFloat(g) / 255.0,
-                   blue: CGFloat(b) / 255.0,
-                   alpha: CGFloat(a) / 255.0)
-}
-
-fileprivate func uiColorToHex(_ ui: UIColor, includeAlpha: Bool = false) -> String? {
-    var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
-    guard ui.getRed(&r, green: &g, blue: &b, alpha: &a) else { return nil }
-    if includeAlpha {
-        return String(format: "#%02X%02X%02X%02X", Int(r * 255), Int(g * 255), Int(b * 255), Int(a * 255))
-    } else {
-        return String(format: "#%02X%02X%02X", Int(r * 255), Int(g * 255), Int(b * 255))
-    }
-}
+// (Using shared Color/UIColor extensions in Utilities/ColorHex.swift)
 
 private struct PresetEditorView: View {
     let title: String
