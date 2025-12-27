@@ -21,15 +21,16 @@
 		7A25E7042EE6CFFB009C91FF /* StatCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25E6EF2EE6CFFB009C91FF /* StatCardView.swift */; };
 		7A25E7052EE6CFFB009C91FF /* TimerControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25E6F12EE6CFFB009C91FF /* TimerControlsView.swift */; };
 		7A25E7062EE6CFFB009C91FF /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25E6EB2EE6CFFB009C91FF /* TimerViewModel.swift */; };
+		7A25E7152EE6CFFB009C91FF /* SessionFilterTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25E7142EE6CFFB009C91FF /* SessionFilterTabs.swift */; };
 		7ABB26D32EF95B97007DAF4B /* SessionHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB26D22EF95B97007DAF4B /* SessionHistoryView.swift */; };
 		7ABB26D62EF95E6B007DAF4B /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB26D42EF95E6B007DAF4B /* NotificationService.swift */; };
 		7ACD63F02EF57CC400F652EB /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD63EF2EF57CC400F652EB /* HomeViewModel.swift */; };
 		7AD5A1012F1AA00100A1A1A1 /* Preset+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5A1002F1AA00100A1A1A1 /* Preset+CoreData.swift */; };
 		7AD5A1032F1AA00100A1A1A1 /* PresetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5A1022F1AA00100A1A1A1 /* PresetStore.swift */; };
 		7AD5A1052F1AA00100A1A1A1 /* PresetManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD5A1042F1AA00100A1A1A1 /* PresetManagementView.swift */; };
-		7A25E7152EE6CFFB009C91FF /* SessionFilterTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25E7142EE6CFFB009C91FF /* SessionFilterTabs.swift */; };
 		7AE0B10C2F1AA3A2001B37D5 /* PresetStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0B10A2F1AA3A2001B37D5 /* PresetStoreTests.swift */; };
 		7AE0B10D2F1AA3A2001B37D5 /* TimerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0B10B2F1AA3A2001B37D5 /* TimerViewModelTests.swift */; };
+		7AE2BC542EFFEF270090CF17 /* TimerEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE2BC532EFFEF270090CF17 /* TimerEngineTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,7 @@
 		7AE0B10A2F1AA3A2001B37D5 /* PresetStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetStoreTests.swift; sourceTree = "<group>"; };
 		7AE0B10B2F1AA3A2001B37D5 /* TimerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModelTests.swift; sourceTree = "<group>"; };
 		7AE0B10E2F1AA3A2001B37D5 /* FocusFlowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocusFlowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7AE2BC532EFFEF270090CF17 /* TimerEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerEngineTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +195,7 @@
 		7AE0B1092F1AA3A2001B37D5 /* FocusFlowTests */ = {
 			isa = PBXGroup;
 			children = (
+				7AE2BC532EFFEF270090CF17 /* TimerEngineTests.swift */,
 				7AE0B10A2F1AA3A2001B37D5 /* PresetStoreTests.swift */,
 				7AE0B10B2F1AA3A2001B37D5 /* TimerViewModelTests.swift */,
 			);
@@ -330,6 +333,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7AE2BC542EFFEF270090CF17 /* TimerEngineTests.swift in Sources */,
 				7AE0B10C2F1AA3A2001B37D5 /* PresetStoreTests.swift in Sources */,
 				7AE0B10D2F1AA3A2001B37D5 /* TimerViewModelTests.swift in Sources */,
 			);
