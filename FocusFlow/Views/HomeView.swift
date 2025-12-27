@@ -3,10 +3,11 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject var timerVM: TimerViewModel
     @EnvironmentObject var presetStore: PresetStore
+    // @EnvironmentObject var analyticsService: SessionAnalyticsService
     @State private var noteText: String = ""
     @State private var selectedPresetID: UUID?
     @State private var showPresetSheet = false
-    @State private var showHistorySheet = false
+    @State private var showAnalyticsSheet = false
     @StateObject private var homeVM = HomeViewModel()
 
     private var selectedPreset: PresetViewData? {
@@ -40,12 +41,12 @@ struct HomeView: View {
                                 Spacer()
 
                                 HStack(spacing: 16) {
-                                    Button(action: { showHistorySheet = true }) {
-                                        Image(systemName: "clock.arrow.circlepath")
+                                    Button(action: { showAnalyticsSheet = true }) {
+                                        Image(systemName: "chart.bar.fill")
                                             .font(.title2)
                                             .foregroundStyle(.secondary)
                                     }
-                                    .accessibilityLabel("Session history")
+                                    .accessibilityLabel("Analytics")
                                     
                                     Button(action: { showPresetSheet = true }) {
                                         Image(systemName: "rectangle.stack.badge.plus")
@@ -111,8 +112,12 @@ struct HomeView: View {
             PresetManagementView()
                 .environmentObject(presetStore)
         }
-        .sheet(isPresented: $showHistorySheet) {
-            SessionHistoryView()
+        // .sheet(isPresented: $showAnalyticsSheet) {
+        //     AnalyticsView(analyticsService: analyticsService)
+        // }
+        .onAppear {
+            // Refresh analytics when view appears
+            // analyticsService.refreshAllStats()
         }
     }
 
@@ -132,6 +137,13 @@ struct HomeView: View {
         let notes = noteText.trimmingCharacters(in: .whitespacesAndNewlines)
         timerVM.stop(notes: notes.isEmpty ? nil : notes)
         noteText = "" // Clear notes after stopping
+        
+        // Refresh analytics after stopping a session
+        // Task {
+        //     await MainActor.run {
+        //         analyticsService.refreshAllStats()
+        //     }
+        // }
     }
 }
 

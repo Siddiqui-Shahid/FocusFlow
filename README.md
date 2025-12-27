@@ -22,6 +22,29 @@ FocusFlow is a Smart Pomodoro & Focus Coach built with SwiftUI. It helps users s
 | ↳ Core Data persistence | ✅ Done | `PersistenceController` and `FocusSession` model scaffolded |
 | ↳ Distraction note capture | ✅ Done | Notes field persisted to FocusSession Core Data records on stop |
 | ↳ Session history view | ✅ Done | History view implemented with notes display |
+
+### ✅ Completed: Session history (Dec 27, 2025)
+
+- What was implemented:
+	- The session history screen now navigates as a pushed screen (no modal sheet).
+	- Extracted `SessionFilterTabs` into `Views/Components/SessionFilterTabs.swift` (All / Work / Break tabs).
+	- Time-range picker (Last 7 / 30 / 90 days) with filtering applied to the history list.
+	- Grouped sessions by date sections (TODAY, YESTERDAY, and weekday/date headings).
+	- `ModernSessionRowView` showing icon, title, time range, duration, tag and completion state.
+	- Replaced the in-view header with a navigation-bar implementation: the system back is hidden and an icon-only back button is provided; the back chevron and title are horizontally aligned in the nav bar.
+	- Added the new source file to the Xcode project and target so it builds as part of the app.
+
+- How to verify (quick):
+	1. Run the app and tap the bottom card (or the history entry) to push `SessionHistoryView`.
+ 2. Confirm the nav bar shows a single chevron (left) and the `Session History` title aligned as designed.
+ 3. Use the tabs and time-range menu to filter sessions and confirm grouped sections appear.
+
+- Files added/changed (key):
+	- `FocusFlow/Views/SessionHistoryView.swift` — history UI and navigation toolbar
+	- `FocusFlow/Views/Components/SessionFilterTabs.swift` — filter tabs component
+	- `FocusFlow/Views/Components/ModernSessionRowView` (embedded in `SessionHistoryView.swift`)
+	- `FocusFlow.xcodeproj/project.pbxproj` — project file updated to include the new component
+
 | ↳ Local notifications | ✅ Done | `NotificationService` with permission handling and completion alerts |
 | **UI Polish** | 🟡 **In Progress** | Animation and visual improvements |
 | ↳ Bottom card slide animations | 🟡 In Progress | Needs tuning for hide/slide behavior during timer runs |

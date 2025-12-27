@@ -38,7 +38,37 @@ struct BottomCardView: View {
 
             HStack(spacing: 12) {
                 StatCardView(title: "Today", value: "45m", icon: "chart.bar.fill", color: Color(.systemBlue))
-                StatCardView(title: "Streak", value: "3 Days", icon: "flame.fill", color: Color(.systemOrange))
+                
+                NavigationLink(destination: SessionHistoryView().environment(\.managedObjectContext, PersistenceController.shared.viewContext)) {
+                    HStack {
+                        ZStack {
+                            Circle()
+                                .fill(Color.purple.opacity(0.12))
+                                .frame(width: 44, height: 44)
+                            Image(systemName: "clock.arrow.circlepath")
+                                .foregroundColor(.purple)
+                        }
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("History")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            Text("View All")
+                                .font(.headline).fontWeight(.bold)
+                                .foregroundColor(.primary)
+                        }
+
+                        Spacer()
+                        
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundColor(.secondary)
+                    }
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(12)
+                }
+                .buttonStyle(PlainButtonStyle())
             }
         }
         .padding()
