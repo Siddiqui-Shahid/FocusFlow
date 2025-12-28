@@ -18,10 +18,37 @@ FocusFlow is a Smart Pomodoro & Focus Coach built with SwiftUI. It helps users s
 | ↳ Custom presets (work/break durations) | ✅ Done | Preset management UI, persistence, and tests implemented |
 | ↳ Color picker + swatches | ✅ Done | Interactive `ColorPicker` with visual selection indicators |
 | ↳ Preset timestamps (`updatedAt`) | ✅ Done | Preset edits update and surface `updatedAt` across tiles |
-| **Session Management** | ✅ **Done** | Complete session tracking |
-| ↳ Core Data persistence | ✅ Done | `PersistenceController` and `FocusSession` model scaffolded |
-| ↳ Distraction note capture | ✅ Done | Notes field persisted to FocusSession Core Data records on stop |
-| ↳ Session history view | ✅ Done | History view implemented with notes display |
+| **Session Management** | ✅ **Done** | Complete session tracking with enhanced title system |
+| ↳ Core Data persistence | ✅ Done | `PersistenceController` and `FocusSession` model with title field |
+| ↳ Session title capture | ✅ Done | Jot-down notes during sessions become session titles, auto-populated with "Work"/"Break" |
+| ↳ Session history view | ✅ Done | History view implemented with title display and filtering |
+
+### ✅ Completed: Enhanced Session Title System (Dec 28, 2025)
+
+- What was implemented:
+	- **Session title persistence**: Added `title` field to Core Data `FocusSession` model
+	- **Jot-down notes UI**: Text field appears during timer runs for capturing session notes
+	- **Smart title capture**: Notes entered during session become the session title when timer completes
+	- **Auto-population**: Sessions without custom notes automatically get "Work" or "Break" as title
+	- **All completion paths**: Title capture works for natural completion, manual stop, and skip/fast-forward
+	- **Dynamic session colors**: Work sessions display in blue, break sessions in orange
+	- **Session history integration**: History view displays saved session titles instead of generic labels
+	- **Real-time sync**: Notes typed during session are tracked and saved on all completion scenarios
+
+- How to verify:
+	1. Start a timer and type notes in the "Jot down notes..." field that appears
+	2. Let timer complete naturally or use skip (long-press forward) → notes become session title
+	3. Check session history to see custom titles or "Work"/"Break" defaults
+	4. Notice blue color for work sessions, orange for break sessions
+
+- Files modified:
+	- `FocusFlow/Persistence/PersistenceController.swift` — Added title field to Core Data model
+	- `FocusFlow/Persistence/FocusSession+CoreData.swift` — Updated create method for title support
+	- `FocusFlow/ViewModels/TimerViewModel.swift` — Added title tracking, dynamic colors, completion handling
+	- `FocusFlow/Views/HomeView.swift` — Added jot-down notes UI and title passing
+	- `FocusFlow/Views/Components/TimerCircleView.swift` — Dynamic colors based on session type
+	- `FocusFlow/Views/Components/TimerControlsView.swift` — Skip functionality with note capture
+	- `FocusFlow/Views/SessionHistoryView.swift` — Display session titles instead of generic text
 
 ### ✅ Completed: Session history (Dec 27, 2025)
 
@@ -46,7 +73,8 @@ FocusFlow is a Smart Pomodoro & Focus Coach built with SwiftUI. It helps users s
 	- `FocusFlow.xcodeproj/project.pbxproj` — project file updated to include the new component
 
 | ↳ Local notifications | ✅ Done | `NotificationService` with permission handling and completion alerts |
-| **UI Polish** | 🟡 **In Progress** | Animation and visual improvements |
+| **UI Polish** | ✅ **Done** | Visual improvements and animations |
+| ↳ Dynamic session colors | ✅ Done | Blue for work sessions, orange for break sessions with smooth transitions |
 | ↳ Bottom card slide animations | 🟡 In Progress | Needs tuning for hide/slide behavior during timer runs |
 | ↳ Analytics dashboard | ⏸️ Pending | Session aggregation and UI presentation needed |
 | ↳ Breathing micro-routine | ⏸️ Pending | Animated view, timing, and audio assets needed |
@@ -114,7 +142,6 @@ FocusFlow is a Smart Pomodoro & Focus Coach built with SwiftUI. It helps users s
 
 ## In-Progress Focus
 - Bottom card animation polish so the presets and stats tray slides out of view during active sessions and returns on stop.
-- Persisting the distraction note field when a session ends so notes appear in stored session records.
 - Explore preset management UX to unlock configurable work/break durations and prepare for onboarding goals.
 
 ## What's Pending
@@ -170,10 +197,6 @@ xcodebuild test -scheme FocusFlow -destination 'platform=iOS Simulator,name=iPho
 
 Below are prioritized implementation tasks with short acceptance criteria. If you want, I can start working on any of these and open PRs for review.
 
-- Persist jot-note when ending a session
-	- Acceptance: When a session is stopped and the user enters a distraction note, the note is saved to the `FocusSession` record and appears in session detail.
-	- Files to touch: `HomeView.swift`, `TimerViewModel.swift`, Core Data model (`FocusSession`), `PersistenceController.swift`.
-
 - Bottom-card hide/slide behavior while timer runs
 	- Acceptance: When a session starts, bottom presets/stats card animates down and hides (or partially hides) leaving the timer centered; when stopped, it slides back in. Animation should be smooth on simulator.
 	- Files to touch: `HomeView.swift`, animation timing constants in view model.
@@ -201,7 +224,6 @@ Below are prioritized implementation tasks with short acceptance criteria. If yo
 	- Acceptance: PRs run a workflow that builds the app and runs unit tests on macOS runners.
 
 **Open TODOs (short)**
-- [ ] Persist jot-note when ending a session
 - [ ] Add unit tests for `TimerEngine` and ViewModels
 - [ ] Implement session history UI and analytics screens
 - [ ] Add local notifications scheduling/cancellation tests
@@ -219,9 +241,9 @@ Here are three prioritized next tasks you can take; each is small-to-medium scop
 	- Add focused tests covering start/pause/resume/stop, elapsed-time calculation across suspends, and progress ring calculations.
 	- Why: high ROI — prevents regressions in time-critical code and makes future refactors safer.
 
-3. **Persist distraction notes when stopping a session**
-	- Wire the editor/UI so a user-entered note is saved with `FocusSession` on stop and appears in session detail.
-	- Why: increases the product's usefulness (journaling + review) and is a visible user-facing improvement.
+3. **Bottom-card hide/slide behavior while timer runs**
+	- Animate the bottom card to slide out of view during active sessions for a cleaner timer-focused interface.
+	- Why: improves focus during sessions and provides better visual hierarchy.
 
 If you want, I can implement the first option (consolidate color utilities and add the file to the Xcode target) as a quick follow-up PR and remove the local helpers used in views.
 
