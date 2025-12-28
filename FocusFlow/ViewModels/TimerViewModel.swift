@@ -5,6 +5,8 @@ import CoreData
 @MainActor
 final class TimerViewModel: ObservableObject {
     @Published var displayedState: TimerState = .idle
+    @Published var currentSessionMode: SessionMode = .work
+    @Published var currentJottedNotes: String = ""
     private let timerEngine: TimerEngine
     private var streamTask: Task<Void, Never>?
     let persistence: PersistenceController
@@ -39,7 +41,8 @@ final class TimerViewModel: ObservableObject {
                     if case .finished = state,
                        case .running = previousState {
                         Task {
-                            await self?.handleSessionCompletion()
+                            let jottedNotes = self?.currentJottedNotes
+                            await self?.handleSessionCompletion(jottedNotes: jottedNotes)
                         }
                     }
                 }
@@ -48,10 +51,15 @@ final class TimerViewModel: ObservableObject {
     }
 
     // UI actions
-    func start(preset: PresetViewData, mode: SessionMode) {
+    func start(preset: PresetViewData, mode: SessionMode, title: String? = nil) {
         Task {
             let duration = mode == .work ? preset.workDuration : preset.breakDuration
             guard duration > 0 else { return }
+
+            // Update current session mode
+            await MainActor.run {
+                currentSessionMode = mode
+            }
 
             let engine = timerEngine
             await engine.start(plannedDuration: duration)
@@ -62,17 +70,25 @@ final class TimerViewModel: ObservableObject {
                 sessionType: mode.rawValue
             )
 
+            // Use "Work" or "Break" if no custom title provided
+            let sessionTitle = title?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false 
+                ? title 
+                : (mode == .work ? "Work" : "Break")
+
             let ctx = persistence.newBackgroundContext()
             await ctx.perform {
                 let _ = FocusSession.create(in: ctx,
                                             startTime: Date(),
                                             plannedDuration: duration,
                                             type: mode.rawValue,
+                                            title: sessionTitle,
                                             presetId: preset.id)
                 try? ctx.save()
             }
         }
     }
+
+
 
     func pause() {
         Task {
@@ -115,10 +131,11 @@ final class TimerViewModel: ObservableObject {
         }
     }
 
-    func stop(notes: String? = nil) {
+    func stop(jottedNotes: String? = nil) {
         Task {
             let engine = timerEngine
             let currentState = await engine.getState()
+            print("Code 0098: TimerViewModel.stop() currentState=\(currentState)")
             await engine.stop()
             
             // Only cancel notifications if manually stopped (not naturally completed)
@@ -130,7 +147,7 @@ final class TimerViewModel: ObservableObject {
                 await notificationService.cancelAllNotifications()
             }
             
-            // Update the latest session with completion status and notes
+            // Update the latest session with completion status and jotted notes as title
             let ctx = persistence.newBackgroundContext()
             await ctx.perform {
                 let request: NSFetchRequest<FocusSession> = FocusSession.fetchRequest()
@@ -148,18 +165,21 @@ final class TimerViewModel: ObservableObject {
                         break
                     }
                     
-                    // Save notes if provided
-                    if let notes = notes?.trimmingCharacters(in: .whitespacesAndNewlines), !notes.isEmpty {
-                        latestSession.notes = notes
+                    // Update title with jotted notes if provided
+                    if let jottedNotes = jottedNotes?.trimmingCharacters(in: .whitespacesAndNewlines), !jottedNotes.isEmpty {
+                        latestSession.title = jottedNotes
+                        print("Code 0098: TimerViewModel.stop() updating session title to: \(jottedNotes)")
                     }
                     
+                    // Debug: log what we will save for verification
+                    print("Code 0098: TimerViewModel.stop() updating session id=\(latestSession.id?.uuidString ?? "nil") startTime=\(String(describing: latestSession.startTime)) plannedDuration=\(latestSession.plannedDuration) elapsedSeconds=\(latestSession.elapsedSeconds) completed=\(latestSession.completed)")
                     try? ctx.save()
                 }
             }
         }
     }
     
-    private func handleSessionCompletion() async {
+    private func handleSessionCompletion(jottedNotes: String? = nil) async {
         print("[TimerViewModel] Session completed naturally - updating database")
         
         // Mark session as completed in database
@@ -168,12 +188,76 @@ final class TimerViewModel: ObservableObject {
             let request: NSFetchRequest<FocusSession> = FocusSession.fetchRequest()
             request.sortDescriptors = [NSSortDescriptor(keyPath: \FocusSession.createdAt, ascending: false)]
             request.fetchLimit = 1
-            
+
             if let latestSession = try? ctx.fetch(request).first {
+                // For natural completion, record the full planned duration (user-selected)
+                latestSession.elapsedSeconds = latestSession.plannedDuration
                 latestSession.completed = true
+                
+                // Update title with jotted notes if provided
+                if let jottedNotes = jottedNotes?.trimmingCharacters(in: .whitespacesAndNewlines), !jottedNotes.isEmpty {
+                    latestSession.title = jottedNotes
+                    print("[TimerViewModel] Updated session title to: \(jottedNotes)")
+                }
+                
                 try? ctx.save()
-                print("[TimerViewModel] Marked session as completed in database")
+                print("[TimerViewModel] Marked session as completed in database id=\(latestSession.id?.uuidString ?? "nil") elapsedSeconds=\(latestSession.elapsedSeconds)")
             }
+        }
+    }
+    
+    /// Skip ahead by 30 seconds in the current session
+    func skipThirtySeconds() {
+        Task {
+            let engine = timerEngine
+            await engine.skipSeconds(30)
+            // Update notification if needed
+            await rescheduleNotificationForCurrentState()
+        }
+    }
+    
+    /// Skip to the end of current session (finish immediately)
+    func skipToEnd(jottedNotes: String? = nil) {
+        Task {
+            let engine = timerEngine
+            await engine.finish()
+            // Cancel notification since session is finished
+            await notificationService.cancelAllNotifications()
+            
+            // Save jotted notes as title when skipping to end
+            await handleSessionCompletion(jottedNotes: jottedNotes)
+        }
+    }
+    
+    private func rescheduleNotificationForCurrentState() async {
+        let currentState = await timerEngine.getState()
+        
+        switch currentState {
+        case .running(_, let planned, let elapsed):
+            let remaining = max(0, planned - elapsed)
+            if remaining > 0 {
+                // Determine session type from current session
+                let ctx = persistence.newBackgroundContext()
+                await ctx.perform {
+                    let request: NSFetchRequest<FocusSession> = FocusSession.fetchRequest()
+                    request.sortDescriptors = [NSSortDescriptor(keyPath: \FocusSession.createdAt, ascending: false)]
+                    request.fetchLimit = 1
+                    
+                    if let latestSession = try? ctx.fetch(request).first,
+                       let sessionType = latestSession.type {
+                        Task {
+                            await self.notificationService.cancelAllNotifications()
+                            await self.notificationService.scheduleSessionCompletionNotification(
+                                duration: remaining,
+                                sessionType: sessionType
+                            )
+                        }
+                    }
+                }
+            }
+        default:
+            // Cancel notifications for non-running states
+            await notificationService.cancelAllNotifications()
         }
     }
 
@@ -223,8 +307,17 @@ final class TimerViewModel: ObservableObject {
         case .idle, .finished:
             return "FOCUS"
         case .running, .paused:
-            return "FOCUS"
+            return currentSessionMode == .work ? "FOCUS" : "BREAK"
         }
+    }
+
+    // Dynamic colors based on session mode
+    var primaryColor: Color {
+        return currentSessionMode == .work ? .blue : .orange
+    }
+    
+    var primaryColorBackground: Color {
+        return currentSessionMode == .work ? Color.blue.opacity(0.15) : Color.orange.opacity(0.15)
     }
 
     // Convenience boolean for UI

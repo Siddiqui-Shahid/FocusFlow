@@ -67,6 +67,51 @@ public actor TimerEngine {
         publishState()
     }
     
+    /// Skip ahead by a specific number of seconds
+    public func skipSeconds(_ seconds: TimeInterval) async {
+        guard seconds > 0 else { return }
+        
+        switch state {
+        case .running(let start, let planned, _):
+            let currentElapsed = Date().timeIntervalSince(start)
+            let newElapsed = min(currentElapsed + seconds, planned)
+            
+            if newElapsed >= planned {
+                // Skip to finished
+                state = .finished
+                cancelTicks()
+            } else {
+                // Adjust start time to reflect the skipped seconds
+                let newStart = Date().addingTimeInterval(-newElapsed)
+                state = .running(startTime: newStart, plannedDuration: planned, elapsed: newElapsed)
+            }
+            publishState()
+        case .paused(let elapsed, let planned):
+            let newElapsed = min(elapsed + seconds, planned)
+            
+            if newElapsed >= planned {
+                state = .finished
+            } else {
+                state = .paused(elapsed: newElapsed, plannedDuration: planned)
+            }
+            publishState()
+        default:
+            return
+        }
+    }
+    
+    /// Immediately finish the current session
+    public func finish() async {
+        switch state {
+        case .running, .paused:
+            state = .finished
+            cancelTicks()
+            publishState()
+        default:
+            return
+        }
+    }
+    
     public func getState() async -> TimerState {
         return state
     }

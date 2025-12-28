@@ -199,8 +199,8 @@ struct ModernSessionRowView: View {
     }
     
     private var sessionTitle: String {
-        if let notes = session.notes, !notes.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            return notes
+        if let title = session.title, !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return title
         }
         
         guard let type = session.type else { return "Unknown Session" }
@@ -218,17 +218,21 @@ struct ModernSessionRowView: View {
     }
     
     private var duration: String {
+        // Debug: log read values when rendering history rows
+        print("Code 0098: SessionHistoryView row read session id=\(session.id?.uuidString ?? "nil") startTime=\(String(describing: session.startTime)) plannedDuration=\(session.plannedDuration) elapsedSeconds=\(session.elapsedSeconds) completed=\(session.completed)")
         let minutes = Int(session.elapsedSeconds) / 60
         return "\(minutes)m"
     }
     
     private var timeRange: String {
         guard let startTime = session.startTime else { return "Unknown time" }
+        // Log read values for debugging
+        print("Code 0098: SessionHistoryView computing timeRange for session id=\(session.id?.uuidString ?? "nil") startTime=\(startTime) elapsedSeconds=\(session.elapsedSeconds)")
         let endTime = Date(timeInterval: TimeInterval(session.elapsedSeconds), since: startTime)
-        
+
         let formatter = DateFormatter()
         formatter.timeStyle = .short
-        
+
         return "\(formatter.string(from: startTime)) - \(formatter.string(from: endTime))"
     }
     

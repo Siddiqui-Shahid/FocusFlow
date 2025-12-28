@@ -17,15 +17,7 @@ struct TimerControlsView: View {
                     .foregroundStyle(.secondary)
             }
 
-            if timerVM.isRunning {
-                TextField("Jot down a distraction...", text: $noteText)
-                    .padding()
-                    .background(Color.white)
-                    .cornerRadius(12)
-                    .shadow(color: Color.black.opacity(0.02), radius: 6, x: 0, y: 2)
-                    .padding(.horizontal)
-                    .transition(.move(edge: .top).combined(with: .opacity))
-            }
+
 
             HStack(spacing: 48) {
                 if timerVM.isRunning {
@@ -74,12 +66,29 @@ struct TimerControlsView: View {
                 }
 
                 if timerVM.isRunning {
-                    Button(action: { /* skip to next */ }) {
+                    Button(action: { 
+                        timerVM.skipThirtySeconds()
+                    }) {
                         Circle()
                             .fill(Color(UIColor.systemGray5))
                             .frame(width: 64, height: 64)
-                            .overlay(Image(systemName: "forward.fill").foregroundColor(.primary))
+                            .overlay(
+                                VStack(spacing: 2) {
+                                    Image(systemName: "forward.fill")
+                                        .font(.system(size: 18))
+                                        .foregroundColor(.primary)
+                                    Text("30s")
+                                        .font(.caption2.weight(.semibold))
+                                        .foregroundColor(.secondary)
+                                }
+                            )
                     }
+                    .simultaneousGesture(
+                        LongPressGesture(minimumDuration: 0.6).onEnded { _ in
+                            let jottedNotes = noteText.trimmingCharacters(in: .whitespacesAndNewlines)
+                            timerVM.skipToEnd(jottedNotes: jottedNotes.isEmpty ? nil : jottedNotes)
+                        }
+                    )
                     .transition(.scale.combined(with: .opacity))
                 } else {
                     Button(action: startBreakAction) {
@@ -110,6 +119,8 @@ struct TimerControlsView: View {
         }
     }
 }
+
+
 
 #if DEBUG
 struct TimerControlsView_Previews: PreviewProvider {

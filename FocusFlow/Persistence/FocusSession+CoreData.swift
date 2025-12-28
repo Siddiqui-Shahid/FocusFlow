@@ -13,6 +13,7 @@ public class FocusSession: NSManagedObject {
     @NSManaged public var elapsedSeconds: Int64
     @NSManaged public var completed: Bool
     @NSManaged public var type: String?
+    @NSManaged public var title: String?
     @NSManaged public var notes: String?
     @NSManaged public var createdAt: Date?
     @NSManaged public var presetId: UUID?
@@ -23,6 +24,7 @@ extension FocusSession {
                        startTime: Date,
                        plannedDuration: TimeInterval,
                        type: String = "work",
+                       title: String? = nil,
                        presetId: UUID? = nil,
                        completed: Bool = false) -> FocusSession {
         let session = FocusSession(context: context)
@@ -32,13 +34,18 @@ extension FocusSession {
         session.elapsedSeconds = 0
         session.completed = completed
         session.type = type
+        session.title = title
         session.createdAt = Date()
         session.presetId = presetId
+        // Debug log to trace creation
+        print("Code 0098: Created FocusSession id=\(session.id?.uuidString ?? "nil") startTime=\(startTime) plannedDuration=\(plannedDuration) elapsedSeconds=0 type=\(type) title=\(session.title ?? "")")
         return session
     }
     
     func markCompleted(elapsedTime: TimeInterval) {
         self.elapsedSeconds = Int64(elapsedTime)
         self.completed = true
+        // Debug log to trace completion write
+        print("Code 0098: Marked FocusSession id=\(self.id?.uuidString ?? "nil") elapsedSeconds=\(self.elapsedSeconds) completed=\(self.completed)")
     }
 }

@@ -11,10 +11,11 @@ struct TimerCircleView: View {
 
             Circle()
                 .trim(from: 0, to: CGFloat(timerVM.progress))
-                .stroke(Color(.systemBlue), style: StrokeStyle(lineWidth: 18, lineCap: .round))
+                .stroke(timerVM.primaryColor, style: StrokeStyle(lineWidth: 18, lineCap: .round))
                 .rotationEffect(.degrees(-90))
                 .frame(width: 300, height: 300)
                 .animation(.easeOut(duration: 0.6), value: timerVM.progress)
+                .animation(.easeInOut(duration: 0.3), value: timerVM.currentSessionMode)
 
             VStack(spacing: 8) {
                 Text(timerVM.remainingTimeFormatted)

@@ -22,6 +22,7 @@
 		7A25E7052EE6CFFB009C91FF /* TimerControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25E6F12EE6CFFB009C91FF /* TimerControlsView.swift */; };
 		7A25E7062EE6CFFB009C91FF /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25E6EB2EE6CFFB009C91FF /* TimerViewModel.swift */; };
 		7A25E7152EE6CFFB009C91FF /* SessionFilterTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A25E7142EE6CFFB009C91FF /* SessionFilterTabs.swift */; };
+		7ABAE0C72F00FCE70007188E /* SkipFunctionalityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABAE0C62F00FCE70007188E /* SkipFunctionalityTests.swift */; };
 		7ABB26D32EF95B97007DAF4B /* SessionHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB26D22EF95B97007DAF4B /* SessionHistoryView.swift */; };
 		7ABB26D62EF95E6B007DAF4B /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB26D42EF95E6B007DAF4B /* NotificationService.swift */; };
 		7ACD63F02EF57CC400F652EB /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD63EF2EF57CC400F652EB /* HomeViewModel.swift */; };
@@ -31,6 +32,7 @@
 		7AE0B10C2F1AA3A2001B37D5 /* PresetStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0B10A2F1AA3A2001B37D5 /* PresetStoreTests.swift */; };
 		7AE0B10D2F1AA3A2001B37D5 /* TimerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0B10B2F1AA3A2001B37D5 /* TimerViewModelTests.swift */; };
 		7AE2BC542EFFEF270090CF17 /* TimerEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE2BC532EFFEF270090CF17 /* TimerEngineTests.swift */; };
+		7B0000022F1AA3A2001B3700 /* SessionHistoryDebugTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0000012F1AA3A2001B3700 /* SessionHistoryDebugTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +62,7 @@
 		7A25E6F72EE6CFFB009C91FF /* FocusFlowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusFlowApp.swift; sourceTree = "<group>"; };
 		7A25E7142EE6CFFB009C91FF /* SessionFilterTabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionFilterTabs.swift; sourceTree = "<group>"; };
 		7A6EECC42EE5AFAC00A8F0C9 /* FocusFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7ABAE0C62F00FCE70007188E /* SkipFunctionalityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkipFunctionalityTests.swift; sourceTree = "<group>"; };
 		7ABB26D22EF95B97007DAF4B /* SessionHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHistoryView.swift; sourceTree = "<group>"; };
 		7ABB26D42EF95E6B007DAF4B /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		7ACD63EF2EF57CC400F652EB /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -70,6 +73,7 @@
 		7AE0B10B2F1AA3A2001B37D5 /* TimerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModelTests.swift; sourceTree = "<group>"; };
 		7AE0B10E2F1AA3A2001B37D5 /* FocusFlowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocusFlowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AE2BC532EFFEF270090CF17 /* TimerEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerEngineTests.swift; sourceTree = "<group>"; };
+		7B0000012F1AA3A2001B3700 /* SessionHistoryDebugTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHistoryDebugTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +202,8 @@
 				7AE2BC532EFFEF270090CF17 /* TimerEngineTests.swift */,
 				7AE0B10A2F1AA3A2001B37D5 /* PresetStoreTests.swift */,
 				7AE0B10B2F1AA3A2001B37D5 /* TimerViewModelTests.swift */,
+				7ABAE0C62F00FCE70007188E /* SkipFunctionalityTests.swift */,
+				7B0000012F1AA3A2001B3700 /* SessionHistoryDebugTests.swift */,
 			);
 			path = FocusFlowTests;
 			sourceTree = "<group>";
@@ -335,7 +341,9 @@
 			files = (
 				7AE2BC542EFFEF270090CF17 /* TimerEngineTests.swift in Sources */,
 				7AE0B10C2F1AA3A2001B37D5 /* PresetStoreTests.swift in Sources */,
+				7ABAE0C72F00FCE70007188E /* SkipFunctionalityTests.swift in Sources */,
 				7AE0B10D2F1AA3A2001B37D5 /* TimerViewModelTests.swift in Sources */,
+				7B0000022F1AA3A2001B3700 /* SessionHistoryDebugTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

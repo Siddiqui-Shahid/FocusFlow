@@ -56,6 +56,7 @@ struct PersistenceController {
 
         session.properties = [
             attr("id", .UUIDAttributeType),
+            attr("title", .stringAttributeType, isOptional: true),
             attr("startTime", .dateAttributeType),
             attr("plannedDuration", .integer64AttributeType),
             attr("elapsedSeconds", .integer64AttributeType, isOptional: false),

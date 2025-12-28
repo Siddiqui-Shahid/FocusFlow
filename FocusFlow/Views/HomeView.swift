@@ -8,6 +8,8 @@ struct HomeView: View {
     @State private var selectedPresetID: UUID?
     @State private var showPresetSheet = false
     @State private var showAnalyticsSheet = false
+    @State private var showNoteSavedBanner = false
+    @State private var sessionTitle: String = ""
     @StateObject private var homeVM = HomeViewModel()
 
     private var selectedPreset: PresetViewData? {
@@ -22,6 +24,9 @@ struct HomeView: View {
             GeometryReader { geo in
                 ZStack(alignment: .top) {
                     Color(UIColor.systemGray6).ignoresSafeArea()
+
+                    // confirmation banner shown when a note is saved
+                    noteSavedBanner()
 
                     VStack(spacing: 0) {
                         HStack {
@@ -73,14 +78,25 @@ struct HomeView: View {
                                           startBreakAction: startBreak,
                                           stopAction: stopWithNotes)
 
+                        // Session note input (appears during timer)
+                        if timerVM.isRunning {
+                            TextField("Jot down notes...", text: $sessionTitle)
+                                .textFieldStyle(.roundedBorder)
+                                .padding(.horizontal)
+                                .padding(.top, 8)
+                                .transition(.move(edge: .top).combined(with: .opacity))
+                                .onChange(of: sessionTitle) { _, newValue in
+                                    timerVM.currentJottedNotes = newValue
+                                }
+                        }
                         Spacer()
 
                         // Bottom card - hide by translating off the bottom when session is running
                         BottomCardView(presets: presetStore.presets,
                                        selectedPresetID: selectedPreset?.id,
                                        onSelect: { preset in selectedPresetID = preset.id },
-                                       onStartFocus: { timerVM.start(preset: $0, mode: .work) },
-                                       onStartBreak: { timerVM.start(preset: $0, mode: .breakTime) },
+                                       onStartFocus: { timerVM.start(preset: $0, mode: .work, title: nil) },
+                                       onStartBreak: { timerVM.start(preset: $0, mode: .breakTime, title: nil) },
                                        onManageTap: { showPresetSheet = true })
                             .padding(.horizontal)
                             .padding(.bottom, 8)
@@ -125,18 +141,31 @@ struct HomeView: View {
     // MARK: - Actions
     private func startFocus() {
         guard let preset = selectedPreset else { return }
-        timerVM.start(preset: preset, mode: .work)
+        let titleToUse = sessionTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : sessionTitle
+        timerVM.start(preset: preset, mode: .work, title: titleToUse)
+        sessionTitle = ""
     }
 
     private func startBreak() {
         guard let preset = selectedPreset else { return }
-        timerVM.start(preset: preset, mode: .breakTime)
+        let titleToUse = sessionTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : sessionTitle
+        timerVM.start(preset: preset, mode: .breakTime, title: titleToUse)
+        sessionTitle = ""
     }
     
     private func stopWithNotes() {
-        let notes = noteText.trimmingCharacters(in: .whitespacesAndNewlines)
-        timerVM.stop(notes: notes.isEmpty ? nil : notes)
-        noteText = "" // Clear notes after stopping
+        let jottedNotes = sessionTitle.trimmingCharacters(in: .whitespacesAndNewlines)
+        timerVM.stop(jottedNotes: jottedNotes.isEmpty ? nil : jottedNotes)
+        sessionTitle = "" // Clear notes after stopping
+        timerVM.currentJottedNotes = ""
+        withAnimation {
+            showNoteSavedBanner = true
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
+            withAnimation {
+                showNoteSavedBanner = false
+            }
+        }
         
         // Refresh analytics after stopping a session
         // Task {
@@ -144,6 +173,27 @@ struct HomeView: View {
         //         analyticsService.refreshAllStats()
         //     }
         // }
+    }
+
+    // Simple banner overlay for confirmation
+    @ViewBuilder
+    private func noteSavedBanner() -> some View {
+        if showNoteSavedBanner {
+            HStack(spacing: 8) {
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundColor(.white)
+                Text("Note saved")
+                    .foregroundColor(.white)
+                    .font(.subheadline.weight(.semibold))
+            }
+            .padding(.vertical, 8)
+            .padding(.horizontal, 14)
+            .background(Color.accentColor)
+            .cornerRadius(12)
+            .shadow(radius: 8)
+            .padding(.top, 44)
+            .transition(.move(edge: .top).combined(with: .opacity))
+        }
     }
 }
 
