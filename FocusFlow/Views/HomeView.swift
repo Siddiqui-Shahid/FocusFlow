@@ -80,7 +80,7 @@ struct HomeView: View {
 
                         // Session note input (appears during timer)
                         if timerVM.isRunning {
-                            TextField("Jot down notes...", text: $sessionTitle)
+                            TextField("Aim For the session", text: $sessionTitle)
                                 .textFieldStyle(.roundedBorder)
                                 .padding(.horizontal)
                                 .padding(.top, 8)
